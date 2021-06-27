@@ -18,6 +18,15 @@ const Area = styled.div`
     align-items: center;
 `;
 
+const Button = styled.div`
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+`;
+
 const Message = styled.h1`
     text-align: center;
 `;
@@ -71,10 +80,6 @@ export default function App() {
         setMessages([...messages]);
     }
 
-    const pushLeft = () => pushMessage('left');
-
-    const pushRight = () => pushMessage('right');
-
     function renderNonTouchDevice() {
         return (
             <Main>
@@ -85,17 +90,27 @@ export default function App() {
 
     const renderPortrait = () => <Main><Message>Please view this in landscape mode</Message></Main>;
 
+    function renderButton(title, onClick) {
+        return (<Button onClick={onClick}>{title}</Button>);
+    }
+
     function renderGame() {
         return (
             <Main>
-                <Area onClick={pushLeft}>
-                    <div>left</div>
+                <Area>
+                    {renderButton('Select', () => pushMessage('select'))}
+                    {renderButton('Up', () => pushMessage('up'))}
+                    {renderButton('Right', () => pushMessage('right'))}
+                    {renderButton('Down', () => pushMessage('down'))}
+                    {renderButton('Left', () => pushMessage('Left'))}
                 </Area>
                 <Area>
                     {messages.map((m, i) => <div key={i}>{m}</div>)}
                 </Area>
-                <Area onClick={pushRight}>
-                    <div>right</div>
+                <Area>
+                    {renderButton('Start', () => pushMessage('start'))}
+                    {renderButton('B', () => pushMessage('B'))}
+                    {renderButton('A', () => pushMessage('A'))}
                 </Area>
             </Main>
         );
@@ -110,6 +125,7 @@ export default function App() {
             return renderGame();
         }
     } else {
-        return renderNonTouchDevice();
+        return renderGame();
+        // return renderNonTouchDevice();
     }
 }
