@@ -80,13 +80,7 @@ export default function App() {
         setMessages([...messages]);
     }
 
-    function renderNonTouchDevice() {
-        return (
-            <Main>
-                <Message>Please view this on a mobile device</Message>
-            </Main>
-        );
-    }
+    // const renderNonTouchDevice = () => <Main><Message>Please view this on a mobile device</Message></Main>;
 
     const renderPortrait = () => <Main><Message>Please view this in landscape mode</Message></Main>;
 
