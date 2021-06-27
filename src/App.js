@@ -18,38 +18,69 @@ const Area = styled.div`
     align-items: center;
 `;
 
+const Message = styled.h1`
+    text-align: center;
+`;
+
 export default function App() {
     const [messages, setMessages] = useState([]);
-    const [isMobile, setIsMobile] = useState(false);
+    const [isTouchDevice, setIsTouchDevice] = useState(false);
+    const [orientation, setOrientation] = useState(null);
 
     useEffect(() => {
         checkDevice();
-    }, []);
+        checkOrientation();
+        addOrientationChangeListener();
+    });
+
+    function addOrientationChangeListener() {
+        window.addEventListener('orientationchange', function () {
+            const afterOrientationChange = function () {
+                setOrientation(getOrientation());
+                window.removeEventListener('resize', afterOrientationChange);
+            };
+            window.addEventListener('resize', afterOrientationChange);
+        });
+
+        window.addEventListener('resize', () => checkDevice());
+    }
 
     function checkDevice() {
-        const mobileCheckResult = window.matchMedia("only screen and (max-width: 760px)").matches;
-        setIsMobile(mobileCheckResult);
+        const touchDeviceCheckResult = ('ontouchstart' in document.documentElement);
+        console.log('HERE ' + touchDeviceCheckResult);
+        setIsTouchDevice(touchDeviceCheckResult);
     }
 
-    function pushLeft() {
-        messages.push('left');
+    function checkOrientation() {
+        const orientationCheckResult = getOrientation();
+        setOrientation(orientationCheckResult);
+        console.log(orientationCheckResult);
+    }
+
+    function getOrientation() {
+        return window.screen.orientation.angle === 0 ? 'portrait' : 'landscape';
+    }
+
+    function pushMessage(message) {
+        messages.push(message);
         setMessages([...messages]);
     }
 
-    function pushRight() {
-        messages.push('right');
-        setMessages([...messages]);
-    }
+    const pushLeft = () => pushMessage('left');
 
-    function renderDesktop() {
+    const pushRight = () => pushMessage('right');
+
+    function renderNonTouchDevice() {
         return (
             <Main>
-                <h1>Please view this on a mobile device</h1>
+                <Message>Please view this on a mobile device</Message>
             </Main>
         );
     }
 
-    function renderMobile() {
+    const renderPortrait = () => <Main><Message>Please view this in landscape mode</Message></Main>;
+
+    function renderGame() {
         return (
             <Main>
                 <Area onClick={pushLeft}>
@@ -65,9 +96,13 @@ export default function App() {
         );
     }
 
-    if (isMobile) {
-        return renderMobile();
+    if (isTouchDevice) {
+        if (orientation === 'portrait') {
+            return renderPortrait();
+        } else {
+            return renderGame();
+        }
     } else {
-        return renderDesktop();
+        return renderNonTouchDevice();
     }
 }
