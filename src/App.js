@@ -24,41 +24,46 @@ const Message = styled.h1`
 
 export default function App() {
     const [messages, setMessages] = useState([]);
+    const [initializing, setInitializing] = useState(false);
     const [isTouchDevice, setIsTouchDevice] = useState(false);
     const [orientation, setOrientation] = useState(null);
 
     useEffect(() => {
+        addOrientationChangeListener();
         checkDevice();
         checkOrientation();
-        addOrientationChangeListener();
-    });
+        setInitializing(false);
+        // eslint-disable-next-line
+    }, []);
 
     function addOrientationChangeListener() {
-        window.addEventListener('orientationchange', function () {
-            const afterOrientationChange = function () {
-                setOrientation(getOrientation());
-                window.removeEventListener('resize', afterOrientationChange);
-            };
-            window.addEventListener('resize', afterOrientationChange);
-        });
-
-        window.addEventListener('resize', () => checkDevice());
+        window.addEventListener('resize', () => window.location.reload());
     }
 
     function checkDevice() {
         const touchDeviceCheckResult = ('ontouchstart' in document.documentElement);
-        console.log('HERE ' + touchDeviceCheckResult);
         setIsTouchDevice(touchDeviceCheckResult);
     }
 
     function checkOrientation() {
         const orientationCheckResult = getOrientation();
         setOrientation(orientationCheckResult);
-        console.log(orientationCheckResult);
     }
 
     function getOrientation() {
-        return window.screen.orientation.angle === 0 ? 'portrait' : 'landscape';
+        let result;
+        const screenOrientation = window.screen.orientation;
+        if (screenOrientation) {
+            result = screenOrientation.angle === 0 ? 'portrait' : 'landscape';
+        } else {
+            const mql = window.matchMedia("(orientation: portrait)");
+            if (mql.matches) {
+                result = 'portrait';
+            } else {
+                result = 'landscape';
+            }
+        }
+        return result;
     }
 
     function pushMessage(message) {
@@ -96,7 +101,9 @@ export default function App() {
         );
     }
 
-    if (isTouchDevice) {
+    if (initializing) {
+        return null;
+    } else if (isTouchDevice) {
         if (orientation === 'portrait') {
             return renderPortrait();
         } else {
