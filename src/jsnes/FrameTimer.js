@@ -1,4 +1,8 @@
+import anylogger from "anylogger";
+
 const FPS = 60.098;
+
+const log = anylogger('pwa-nes')
 
 export default class FrameTimer {
   constructor(props) {
@@ -71,6 +75,6 @@ export default class FrameTimer {
         this.generateFrame();
       }, (i * timeToNextFrame) / numFrames);
     }
-    if (numFrames > 1) console.log("SKIP", numFrames - 1, this.lastFrameTime);
+    if (numFrames > 1) log.debug("SKIP", numFrames - 1, this.lastFrameTime);
   };
 }

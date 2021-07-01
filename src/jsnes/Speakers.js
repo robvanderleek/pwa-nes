@@ -1,5 +1,8 @@
 import RingBuffer from "ringbufferjs";
 import { handleError } from "./utils";
+import anylogger from "anylogger";
+
+const log = anylogger('pwa-nes')
 
 export default class Speakers {
   constructor({ onBufferUnderrun }) {
@@ -43,7 +46,7 @@ export default class Speakers {
 
   writeSample = (left, right) => {
     if (this.buffer.size() / 2 >= this.bufferSize) {
-      console.log(`Buffer overrun`);
+      log.warn(`Buffer overrun`);
       this.buffer.deqN(this.bufferSize / 2);
     }
     this.buffer.enq(left);
@@ -69,7 +72,7 @@ export default class Speakers {
       // ignore empty buffers... assume audio has just stopped
       var bufferSize = this.buffer.size() / 2;
       if (bufferSize > 0) {
-        console.log(`Buffer underrun (needed ${size}, got ${bufferSize})`);
+        log.warn(`Buffer underrun (needed ${size}, got ${bufferSize})`);
       }
       for (var j = 0; j < size; j++) {
         left[j] = 0;

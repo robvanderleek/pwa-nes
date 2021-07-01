@@ -2351,6 +2351,11 @@ ansi-styles@^4.0.0, ansi-styles@^4.1.0:
   dependencies:
     color-convert "^2.0.1"
 
+anylogger@^1.0.10, anylogger@^1.0.11:
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/anylogger/-/anylogger-1.0.11.tgz#0ee55f294c6b921070dc29acd2ac9f1f35200625"
+  integrity sha512-sKTWPTG2/d71kLGVmymMJQQslUppxvCz6DN/eODL3/ckmfygZzD0t4P5tRXE3qpM62jI98F/YTHHzFhM12jiJQ==
+
 anymatch@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/anymatch/-/anymatch-2.0.0.tgz#bcb24b4f37934d9aa7ac17b4adaf89e7c76ef2eb"
@@ -6837,6 +6842,11 @@ klona@^2.0.4:
   resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.4.tgz#7bb1e3affb0cb8624547ef7e8f6708ea2e39dfc0"
   integrity sha512-ZRbnvdg/NxqzC7L9Uyqzf4psi1OM4Cuc+sJAkQPjO6XkQIJTNbfK2Rsmbw8fx1p2mkZdp2FZYo2+LwXYY/uwIA==
 
+kurly@^2.0.0-beta.3:
+  version "2.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/kurly/-/kurly-2.0.0-beta.3.tgz#571b02745f9c68b6a5ee012fda8106bd54a87203"
+  integrity sha512-WXSRkhL2VV9lI/sPomBDV9Xf4oQ1s/RiUqzxKt4slkG7ndCxcDfXJ2ZXdxEYDRfevnkSOxmiVX3etunBlHqTAw==
+
 language-subtag-registry@~0.3.2:
   version "0.3.21"
   resolved "https://registry.yarnpkg.com/language-subtag-registry/-/language-subtag-registry-0.3.21.tgz#04ac218bea46f04cb039084602c6da9e788dd45a"
@@ -10685,6 +10695,14 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
+
+ulog@^2.0.0-beta.18:
+  version "2.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/ulog/-/ulog-2.0.0-beta.18.tgz#ef4f51879047d312e71f4e38a1bd05ceef8ff020"
+  integrity sha512-VDu/VBOAJxUr2+WBrNdSWSFc9TzjUppf5hNVTYkW3hf23oEWMYftS0w2cImoH6tKnhBvzCy/z6ZNgorPYyfnWA==
+  dependencies:
+    anylogger "^1.0.10"
+    kurly "^2.0.0-beta.3"
 
 unbox-primitive@^1.0.1:
   version "1.0.1"
