@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import {useEffect, useState} from "react";
+import Emulator from "./jsnes/Emulator";
+import {unzip} from "unzipit";
+import TouchController from "./TouchController";
 
 const Main = styled.div`
     height: 100%;
@@ -31,19 +34,35 @@ const Message = styled.h1`
     text-align: center;
 `;
 
+const touchController = new TouchController();
+
 export default function App() {
     const [messages, setMessages] = useState([]);
     const [initializing, setInitializing] = useState(false);
     const [isTouchDevice, setIsTouchDevice] = useState(false);
     const [orientation, setOrientation] = useState(null);
+    const [romData, setRomData] = useState(undefined);
 
     useEffect(() => {
         addOrientationChangeListener();
         checkDevice();
         checkOrientation();
         setInitializing(false);
+        const loadRom = async () => {
+            const url = 'https://static.emulatorgames.net/roms/nintendo/Super%20Mario%20Bros%20(E).zip';
+            const unzipped = await unzip(url);
+            const firstEntry = Object.keys(unzipped.entries)[0];
+            const buffer = new Int8Array(await unzipped.entries[firstEntry].arrayBuffer());
+            let romDataString = "";
+            for (let i = 0; i < buffer.length; i++) {
+                romDataString += String.fromCharCode(buffer[i]);
+            }
+            setRomData(romDataString);
+        }
+        loadRom();
         // eslint-disable-next-line
     }, []);
+
 
     function addOrientationChangeListener() {
         window.addEventListener('resize', () => window.location.reload());
@@ -85,24 +104,26 @@ export default function App() {
     const renderPortrait = () => <Main><Message>Please view this in landscape mode</Message></Main>;
 
     function renderButton(title, onClick) {
-        return (<Button onClick={onClick}>{title}</Button>);
+        return (<Button onClick={onClick} onMouseDown={() => touchController.handleButtonDown(title)}
+                        onMouseUp={() => touchController.handleButtonUp(title)}>{title}</Button>);
     }
 
     function renderGame() {
         return (
             <Main>
                 <Area>
-                    {renderButton('Select', () => pushMessage('select'))}
-                    {renderButton('Up', () => pushMessage('up'))}
-                    {renderButton('Right', () => pushMessage('right'))}
-                    {renderButton('Down', () => pushMessage('down'))}
+                    {renderButton('Select', () => pushMessage('Select'))}
+                    {renderButton('Up', () => pushMessage('Up'))}
+                    {renderButton('Right', () => pushMessage('Right'))}
+                    {renderButton('Down', () => pushMessage('Down'))}
                     {renderButton('Left', () => pushMessage('Left'))}
                 </Area>
                 <Area>
-                    {messages.map((m, i) => <div key={i}>{m}</div>)}
+                    {romData && <Emulator romData={romData} controller={touchController}/>}
+                    {/*{messages.map((m, i) => <div key={i}>{m}</div>)}*/}
                 </Area>
                 <Area>
-                    {renderButton('Start', () => pushMessage('start'))}
+                    {renderButton('Start', () => pushMessage('Start'))}
                     {renderButton('B', () => pushMessage('B'))}
                     {renderButton('A', () => pushMessage('A'))}
                 </Area>
