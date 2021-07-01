@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import {useEffect, useState} from "react";
+import Emulator from "./jsnes/Emulator";
+import {unzip} from "unzipit";
 
 const Main = styled.div`
     height: 100%;
@@ -36,14 +38,28 @@ export default function App() {
     const [initializing, setInitializing] = useState(false);
     const [isTouchDevice, setIsTouchDevice] = useState(false);
     const [orientation, setOrientation] = useState(null);
+    const [romData, setRomData] = useState(undefined);
 
     useEffect(() => {
         addOrientationChangeListener();
         checkDevice();
         checkOrientation();
         setInitializing(false);
+        const loadRom = async () => {
+            const url = 'https://static.emulatorgames.net/roms/nintendo/Super%20Mario%20Bros%20(E).zip';
+            const unzipped = await unzip(url);
+            const firstEntry = Object.keys(unzipped.entries)[0];
+            const buffer = new Int8Array(await unzipped.entries[firstEntry].arrayBuffer());
+            let romDataString = "";
+            for (let i=0; i<buffer.length; i++) {
+                romDataString += String.fromCharCode(buffer[i]);
+            }
+            setRomData(romDataString);
+        }
+        loadRom();
         // eslint-disable-next-line
     }, []);
+
 
     function addOrientationChangeListener() {
         window.addEventListener('resize', () => window.location.reload());
@@ -99,7 +115,8 @@ export default function App() {
                     {renderButton('Left', () => pushMessage('Left'))}
                 </Area>
                 <Area>
-                    {messages.map((m, i) => <div key={i}>{m}</div>)}
+                    {romData && <Emulator romData={romData}/>}
+                    {/*{messages.map((m, i) => <div key={i}>{m}</div>)}*/}
                 </Area>
                 <Area>
                     {renderButton('Start', () => pushMessage('start'))}
