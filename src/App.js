@@ -104,8 +104,14 @@ export default function App() {
     const renderPortrait = () => <Main><Message>Please view this in landscape mode</Message></Main>;
 
     function renderButton(title, onClick) {
-        return (<Button onClick={onClick} onMouseDown={() => touchController.handleButtonDown(title)}
-                        onMouseUp={() => touchController.handleButtonUp(title)}>{title}</Button>);
+        return (
+            <Button onClick={onClick}
+                    onMouseDown={() => touchController.handleButtonDown(title)}
+                    onMouseUp={() => touchController.handleButtonUp(title)}
+                    onTouchStart={() => touchController.handleButtonDown(title)}
+                    onTouchEnd={() => touchController.handleButtonUp(title)}
+            >{title}</Button>
+        );
     }
 
     function renderGame() {
