@@ -33,17 +33,9 @@
     box-shadow: inset 0px 0px 1px 0px #FBFBFB, 0px 1px 1px 0px rgba(0, 0, 0, 0.21);
 }
 
-.stickers {
+.sticker {
     font-family: 'Orbitron', sans-serif;
     color: #DF2015;
-    position: absolute;
-    z-index: 10;
-}
-
-.st-b {
     font-weight: bold;
-}
-
-.st-a {
-    font-weight: bold;
+    user-select: none;
 }

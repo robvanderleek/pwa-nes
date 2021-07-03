@@ -20,9 +20,9 @@ export default function RightGamePad(props) {
     return (
         <div>
             {renderButton('B')}
-            <div className="st-b">B</div>
+            <div className="sticker">B</div>
             {renderButton('A')}
-            <div className="st-a">A</div>
+            <div className="sticker">A</div>
         </div>
     );
 }
