@@ -3,6 +3,8 @@ import {useEffect, useState} from "react";
 import Emulator from "./jsnes/Emulator";
 import {unzip} from "unzipit";
 import TouchController from "./TouchController";
+import LeftGamePad from "./LeftGamePad";
+import RightGamePad from "./RightGamePad";
 
 const Main = styled.div`
     height: 100%;
@@ -22,7 +24,6 @@ const Area = styled.div`
 `;
 
 const Button = styled.div`
-    height: 100%;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -118,6 +119,7 @@ export default function App() {
         return (
             <Main>
                 <Area>
+                    <LeftGamePad/>
                     {renderButton('Select', () => pushMessage('Select'))}
                     {renderButton('Up', () => pushMessage('Up'))}
                     {renderButton('Right', () => pushMessage('Right'))}
@@ -125,13 +127,12 @@ export default function App() {
                     {renderButton('Left', () => pushMessage('Left'))}
                 </Area>
                 <Area>
-                    {romData && <Emulator romData={romData} controller={touchController}/>}
+                    {romData && <Emulator romData={romData} controller={touchController} paused={true}/>}
                     {/*{messages.map((m, i) => <div key={i}>{m}</div>)}*/}
                 </Area>
                 <Area>
                     {renderButton('Start', () => pushMessage('Start'))}
-                    {renderButton('B', () => pushMessage('B'))}
-                    {renderButton('A', () => pushMessage('A'))}
+                    <RightGamePad touchController={touchController}/>
                 </Area>
             </Main>
         );
