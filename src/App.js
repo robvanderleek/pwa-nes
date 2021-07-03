@@ -119,12 +119,9 @@ export default function App() {
         return (
             <Main>
                 <Area>
-                    <LeftGamePad/>
                     {renderButton('Select', () => pushMessage('Select'))}
-                    {renderButton('Up', () => pushMessage('Up'))}
-                    {renderButton('Right', () => pushMessage('Right'))}
-                    {renderButton('Down', () => pushMessage('Down'))}
-                    {renderButton('Left', () => pushMessage('Left'))}
+                    <LeftGamePad touchController={touchController}/>
+
                 </Area>
                 <Area>
                     {romData && <Emulator romData={romData} controller={touchController} paused={true}/>}

@@ -1,20 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Orbitron);
 
-.controller {
-    width: 500px;
-    margin: 0 auto;
-    top: 30%;
-    position: relative;
-
-}
-
-.buttons-a-b {
-    position: absolute;
-    right: 26px;
-    top: 80px;
-    height: 50px;
-}
-
 .btn-border {
     position: relative;
     width: 50px;
@@ -56,14 +41,8 @@
 
 .st-b {
     font-weight: bold;
-    position: absolute;
-    left: 374px;
-    top: 140px;
 }
 
 .st-a {
     font-weight: bold;
-    position: absolute;
-    left: 434px;
-    top: 140px;
 }
