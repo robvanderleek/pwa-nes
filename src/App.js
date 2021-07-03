@@ -38,7 +38,6 @@ const Message = styled.h1`
 const touchController = new TouchController();
 
 export default function App() {
-    const [messages, setMessages] = useState([]);
     const [initializing, setInitializing] = useState(false);
     const [isTouchDevice, setIsTouchDevice] = useState(false);
     const [orientation, setOrientation] = useState(null);
@@ -95,23 +94,18 @@ export default function App() {
         return result;
     }
 
-    function pushMessage(message) {
-        messages.push(message);
-        setMessages([...messages]);
-    }
-
     // const renderNonTouchDevice = () => <Main><Message>Please view this on a mobile device</Message></Main>;
 
     const renderPortrait = () => <Main><Message>Please view this in landscape mode</Message></Main>;
 
-    function renderButton(title, onClick) {
+    function renderButton(name) {
         return (
-            <Button onClick={onClick}
-                    onMouseDown={() => touchController.handleButtonDown(title)}
-                    onMouseUp={() => touchController.handleButtonUp(title)}
-                    onTouchStart={() => touchController.handleButtonDown(title)}
-                    onTouchEnd={() => touchController.handleButtonUp(title)}
-            >{title}</Button>
+            <Button
+                onMouseDown={() => touchController.handleButtonDown(name)}
+                onMouseUp={() => touchController.handleButtonUp(name)}
+                onTouchStart={() => touchController.handleButtonDown(name)}
+                onTouchEnd={() => touchController.handleButtonUp(name)}
+            >{name}</Button>
         );
     }
 
@@ -119,16 +113,14 @@ export default function App() {
         return (
             <Main>
                 <Area>
-                    {renderButton('Select', () => pushMessage('Select'))}
+                    {renderButton('Select')}
                     <LeftGamePad touchController={touchController}/>
-
                 </Area>
                 <Area>
                     {romData && <Emulator romData={romData} controller={touchController} paused={true}/>}
-                    {/*{messages.map((m, i) => <div key={i}>{m}</div>)}*/}
                 </Area>
                 <Area>
-                    {renderButton('Start', () => pushMessage('Start'))}
+                    {renderButton('Start')}
                     <RightGamePad touchController={touchController}/>
                 </Area>
             </Main>

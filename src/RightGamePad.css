@@ -8,6 +8,7 @@
     background-color: #EDECE7;
     float: left;
     margin: 6px;
+    user-select: none;
 }
 
 .btn-round {

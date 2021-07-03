@@ -6,6 +6,7 @@
     top: 50px;
     width: 110px;
     height: 90px;
+    user-select: none;
 }
 
 .back-cross {
