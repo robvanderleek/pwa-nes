@@ -4,14 +4,29 @@ import PropTypes from "prop-types";
 export default function LeftGamePad(props) {
     const {touchController} = props;
 
-    function renderArrow(className, name) {
+    function renderLfArrow(name) {
         return (
-            <div className={className}
+            <div style={{position: 'absolute', right: 0, width: '32px', height: '100%'}}
                  onMouseDown={() => touchController.handleButtonDown(name)}
                  onMouseUp={() => touchController.handleButtonUp(name)}
                  onTouchStart={() => touchController.handleButtonDown(name)}
                  onTouchEnd={() => touchController.handleButtonUp(name)}
-            />
+            >
+                <div className="arrowlf"/>
+            </div>
+        );
+    }
+
+    function renderRhArrow(name) {
+        return (
+            <div style={{position: 'absolute', left: 0, width: '32px', height: '100%'}}
+                 onMouseDown={() => touchController.handleButtonDown(name)}
+                 onMouseUp={() => touchController.handleButtonUp(name)}
+                 onTouchStart={() => touchController.handleButtonDown(name)}
+                 onTouchEnd={() => touchController.handleButtonUp(name)}
+            >
+                <div className="arrowrh"/>
+            </div>
         );
     }
 
@@ -19,12 +34,12 @@ export default function LeftGamePad(props) {
         <div className="cross">
             <div className="circle"></div>
             <div className="horizontal">
-                {renderArrow('arrowlf', 'Right')}
-                {renderArrow('arrowrh', 'Left')}
+                {renderLfArrow('Right')}
+                {renderRhArrow('Left')}
             </div>
             <div className="vertical">
-                {renderArrow('arrowlf', 'Down')}
-                {renderArrow('arrowrh', 'Up')}
+                {renderLfArrow('Down')}
+                {renderRhArrow('Up')}
             </div>
             <div className="back-cross">
                 <div className="horiz"></div>
