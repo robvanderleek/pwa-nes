@@ -6,23 +6,23 @@ export default function RightGamePad(props) {
 
     function renderButton(name) {
         return (
-            <div className="btn-border">
-                <div className="btn-round"
-                     onMouseDown={() => touchController.handleButtonDown(name)}
-                     onMouseUp={() => touchController.handleButtonUp(name)}
-                     onTouchStart={() => touchController.handleButtonDown(name)}
-                     onTouchEnd={() => touchController.handleButtonUp(name)}
-                />
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end'}}>
+            <div className="btn-border"
+                 onMouseDown={() => touchController.handleButtonDown(name)}
+                 onMouseUp={() => touchController.handleButtonUp(name)}
+                 onTouchStart={() => touchController.handleButtonDown(name)}
+                 onTouchEnd={() => touchController.handleButtonUp(name)}>
+                <div className="btn-round"/>
+            </div>
+                <div className="sticker">{name}</div>
             </div>
         );
     }
 
     return (
-        <div>
+        <div style={{display: 'flex', gap: '24px'}}>
             {renderButton('B')}
-            <div className="sticker">B</div>
             {renderButton('A')}
-            <div className="sticker">A</div>
         </div>
     );
 }

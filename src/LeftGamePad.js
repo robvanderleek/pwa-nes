@@ -31,19 +31,21 @@ export default function LeftGamePad(props) {
     }
 
     return (
-        <div className="cross">
-            <div className="circle"></div>
-            <div className="horizontal">
-                {renderLfArrow('Right')}
-                {renderRhArrow('Left')}
-            </div>
-            <div className="vertical">
-                {renderLfArrow('Down')}
-                {renderRhArrow('Up')}
-            </div>
-            <div className="back-cross">
-                <div className="horiz"></div>
-                <div className="vert"></div>
+        <div style={{width: '110px', height: '110px', transform: 'scale(1.5)'}}>
+            <div className="cross">
+                <div className="circle"></div>
+                <div className="horizontal">
+                    {renderLfArrow('Right')}
+                    {renderRhArrow('Left')}
+                </div>
+                <div className="vertical">
+                    {renderLfArrow('Down')}
+                    {renderRhArrow('Up')}
+                </div>
+                <div className="back-cross">
+                    <div className="horiz"></div>
+                    <div className="vert"></div>
+                </div>
             </div>
         </div>
     );
