@@ -27,11 +27,7 @@ const Area = styled.div`
     -webkit-user-select: none;    
 `;
 
-const Button = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+const Button = styled.button`
     user-select: none;
 `;
 
@@ -104,11 +100,11 @@ export default function App() {
 
     function renderButton(name) {
         return (
-            <Button
-                onMouseDown={() => touchController.handleButtonDown(name)}
-                onMouseUp={() => touchController.handleButtonUp(name)}
-                onTouchStart={() => touchController.handleButtonDown(name)}
-                onTouchEnd={() => touchController.handleButtonUp(name)}
+            <Button className="nes-btn"
+                    onMouseDown={() => touchController.handleButtonDown(name)}
+                    onMouseUp={() => touchController.handleButtonUp(name)}
+                    onTouchStart={() => touchController.handleButtonDown(name)}
+                    onTouchEnd={() => touchController.handleButtonUp(name)}
             >{name}</Button>
         );
     }
@@ -124,6 +120,7 @@ export default function App() {
                     {romData && <Emulator romData={romData} controller={touchController} paused={true}/>}
                 </Area>
                 <Area>
+                    <i style={{position: 'fixed', right: '50px', top: '50px'}} className="nes-icon close is-medium"/>
                     {renderButton('Start')}
                     <RightGamePad touchController={touchController}/>
                 </Area>

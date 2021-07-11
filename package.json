@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^12.1.10",
     "anylogger": "^1.0.11",
     "jsnes": "^1.1.0",
+    "nes.css": "^2.3.0",
     "prop-types": "^15.7.2",
     "raven-js": "^3.27.2",
     "react": "^17.0.2",
