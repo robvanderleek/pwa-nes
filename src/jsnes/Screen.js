@@ -16,6 +16,7 @@ class Screen extends Component {
         ref={canvas => {
           this.canvas = canvas;
         }}
+        style={{width: '100%'}}
       />
     );
   }

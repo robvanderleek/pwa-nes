@@ -16,7 +16,6 @@ const Main = styled.div`
 
 const Area = styled.div`
     height: 100%;
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -27,11 +26,19 @@ const Area = styled.div`
     -webkit-user-select: none;    
 `;
 
+const GamepadArea = styled(Area)`
+    width: 25%;
+`;
+
+const EmulatorArea = styled(Area)`
+    width: 50%;
+`;
+
 const Button = styled.button`
     user-select: none;
 `;
 
-const Message = styled.h1`
+const Message = styled.h2`
     text-align: center;
 `;
 
@@ -94,9 +101,9 @@ export default function App() {
         return result;
     }
 
-    // const renderNonTouchDevice = () => <Main><Message>Please view this on a mobile device</Message></Main>;
+    const renderNonTouchDevice = () => <Main><Message>Please view this on a mobile device</Message></Main>;
 
-    const renderPortrait = () => <Main><Message>Please view this in landscape mode</Message></Main>;
+    const renderPortrait = () => <Main><Message>Rotate device to landscape mode to play!</Message></Main>;
 
     function renderButton(name) {
         return (
@@ -112,18 +119,18 @@ export default function App() {
     function renderGame() {
         return (
             <Main>
-                <Area>
+                <GamepadArea>
                     {renderButton('Select')}
                     <LeftGamePad touchController={touchController}/>
-                </Area>
-                <Area>
+                </GamepadArea>
+                <EmulatorArea>
                     {romData && <Emulator romData={romData} controller={touchController} paused={true}/>}
-                </Area>
-                <Area>
-                    <i style={{position: 'fixed', right: '50px', top: '50px'}} className="nes-icon close is-medium"/>
+                </EmulatorArea>
+                <GamepadArea>
+                    <i style={{position: 'fixed', right: '15px', top: '15px'}} className="nes-icon close is-medium"/>
                     {renderButton('Start')}
                     <RightGamePad touchController={touchController}/>
-                </Area>
+                </GamepadArea>
             </Main>
         );
     }
@@ -137,7 +144,6 @@ export default function App() {
             return renderGame();
         }
     } else {
-        return renderGame();
-        // return renderNonTouchDevice();
+        return renderNonTouchDevice();
     }
 }

@@ -31,7 +31,7 @@ export default function LeftGamePad(props) {
     }
 
     return (
-        <div style={{width: '110px', height: '110px', transform: 'scale(2)'}}>
+        <div style={{width: '110px', height: '110px', transform: 'scale(1.8)'}}>
             <div className="cross">
                 <div className="circle"></div>
                 <div className="horizontal">

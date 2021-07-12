@@ -171,7 +171,7 @@ class Emulator extends Component {
      * Fill parent element with screen. Typically called if parent element changes size.
      */
     fitInParent() {
-        this.screen.fitInParent();
+        // this.screen.fitInParent();
     }
 }
 
