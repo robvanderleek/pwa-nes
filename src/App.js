@@ -1,48 +1,14 @@
-import styled from "styled-components";
 import {useEffect, useState} from "react";
 import Emulator from "./jsnes/Emulator";
 import {unzip} from "unzipit";
 import TouchController from "./TouchController";
 import LeftGamePad from "./LeftGamePad";
 import RightGamePad from "./RightGamePad";
+import {EmulatorArea, GamepadArea, Main, Message} from "./Styles";
+import LoadRom from "./views/LoadRom";
+import Button from "./components/Button";
 
-const Main = styled.div`
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`;
-
-const Area = styled.div`
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    user-select: none;
-    -webkit-touch-callout: none;
-    -webkit-text-size-adjust: none;
-    -webkit-user-select: none;    
-`;
-
-const GamepadArea = styled(Area)`
-    width: 25%;
-`;
-
-const EmulatorArea = styled(Area)`
-    width: 50%;
-`;
-
-const Button = styled.button`
-    user-select: none;
-`;
-
-const Message = styled.h2`
-    text-align: center;
-`;
-
-const touchController = new TouchController();
+const controller = new TouchController();
 
 export default function App() {
     const [initializing, setInitializing] = useState(false);
@@ -103,33 +69,20 @@ export default function App() {
 
     const renderNonTouchDevice = () => <Main><Message>Please view this on a mobile device</Message></Main>;
 
-    const renderPortrait = () => <Main><Message>Rotate device to landscape mode to play!</Message></Main>;
-
-    function renderButton(name) {
-        return (
-            <Button className="nes-btn"
-                    onMouseDown={() => touchController.handleButtonDown(name)}
-                    onMouseUp={() => touchController.handleButtonUp(name)}
-                    onTouchStart={() => touchController.handleButtonDown(name)}
-                    onTouchEnd={() => touchController.handleButtonUp(name)}
-            >{name}</Button>
-        );
-    }
-
     function renderGame() {
         return (
             <Main>
                 <GamepadArea>
-                    {renderButton('Select')}
-                    <LeftGamePad touchController={touchController}/>
+                    <Button onDown={controller.handleButtonDown} onUp={controller.handleButtonUp} title="Select"/>
+                    <LeftGamePad touchController={controller}/>
                 </GamepadArea>
                 <EmulatorArea>
-                    {romData && <Emulator romData={romData} controller={touchController} paused={true}/>}
+                    {romData && <Emulator romData={romData} controller={controller} paused={true}/>}
                 </EmulatorArea>
                 <GamepadArea>
                     <i style={{position: 'fixed', right: '15px', top: '15px'}} className="nes-icon close is-medium"/>
-                    {renderButton('Start')}
-                    <RightGamePad touchController={touchController}/>
+                    <Button onDown={controller.handleButtonDown} onUp={controller.handleButtonUp} title="Start"/>
+                    <RightGamePad touchController={controller}/>
                 </GamepadArea>
             </Main>
         );
@@ -139,7 +92,7 @@ export default function App() {
         return null;
     } else if (isTouchDevice) {
         if (orientation === 'portrait') {
-            return renderPortrait();
+            return (<LoadRom/>);
         } else {
             return renderGame();
         }
