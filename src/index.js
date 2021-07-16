@@ -5,10 +5,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import "ulog"
+import {RomContextProvider} from "./context/RomContext";
 
 ReactDOM.render(
     <React.StrictMode>
-        <App/>
+        <RomContextProvider>
+            <App/>
+        </RomContextProvider>
     </React.StrictMode>,
     document.getElementById('root')
 );

@@ -8,10 +8,6 @@ export const Main = styled.div`
     justify-content: center;
 `;
 
-export const Portrait = styled(Main)`
-    flex-direction: column;
-`;
-
 export const Area = styled.div`
     height: 100%;
     display: flex;
