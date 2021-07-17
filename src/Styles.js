@@ -34,4 +34,5 @@ export const StyledButton = styled.button`
 
 export const Message = styled.h2`
     text-align: center;
+    visibility: ${props => props.hide ? 'hidden' : 'visible'};
 `;
