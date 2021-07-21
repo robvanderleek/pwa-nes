@@ -1,12 +1,12 @@
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import Emulator from "./jsnes/Emulator";
-import {unzip} from "unzipit";
 import TouchController from "./TouchController";
 import LeftGamePad from "./LeftGamePad";
 import RightGamePad from "./RightGamePad";
 import {EmulatorArea, GamepadArea, Main, Message} from "./Styles";
 import LoadRom from "./views/LoadRom";
 import Button from "./components/Button";
+import {RomContext} from "./context/RomContext";
 
 const controller = new TouchController();
 
@@ -14,31 +14,19 @@ export default function App() {
     const [initializing, setInitializing] = useState(false);
     const [isTouchDevice, setIsTouchDevice] = useState(false);
     const [orientation, setOrientation] = useState(null);
-    const [romData, setRomData] = useState(undefined);
+    const romContext = useContext(RomContext);
 
     useEffect(() => {
         addOrientationChangeListener();
         checkDevice();
         checkOrientation();
         setInitializing(false);
-        const loadRom = async () => {
-            const url = 'https://static.emulatorgames.net/roms/nintendo/Super%20Mario%20Bros%20(E).zip';
-            const unzipped = await unzip(url);
-            const firstEntry = Object.keys(unzipped.entries)[0];
-            const buffer = new Int8Array(await unzipped.entries[firstEntry].arrayBuffer());
-            let romDataString = "";
-            for (let i = 0; i < buffer.length; i++) {
-                romDataString += String.fromCharCode(buffer[i]);
-            }
-            setRomData(romDataString);
-        }
-        loadRom();
         // eslint-disable-next-line
     }, []);
 
 
     function addOrientationChangeListener() {
-        window.addEventListener('resize', () => window.location.reload());
+        window.addEventListener('resize', () => checkOrientation());
     }
 
     function checkDevice() {
@@ -69,6 +57,8 @@ export default function App() {
 
     const renderNonTouchDevice = () => <Main><Message>Please view this on a mobile device</Message></Main>;
 
+    const renderNoRomSelected = () => <Main><Message>Please select a ROM to play</Message></Main>;
+
     function renderGame() {
         return (
             <Main>
@@ -77,7 +67,8 @@ export default function App() {
                     <LeftGamePad touchController={controller}/>
                 </GamepadArea>
                 <EmulatorArea>
-                    {romData && <Emulator romData={romData} controller={controller} paused={true}/>}
+                    {romContext.romData &&
+                    <Emulator romData={romContext.romData} controller={controller} paused={true}/>}
                 </EmulatorArea>
                 <GamepadArea>
                     <i style={{position: 'fixed', right: '15px', top: '15px'}} className="nes-icon close is-medium"/>
@@ -94,7 +85,11 @@ export default function App() {
         if (orientation === 'portrait') {
             return (<LoadRom/>);
         } else {
-            return renderGame();
+            if (romContext.selected) {
+                return renderGame();
+            } else {
+                return renderNoRomSelected();
+            }
         }
     } else {
         return renderNonTouchDevice();

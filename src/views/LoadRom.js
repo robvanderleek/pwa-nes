@@ -36,10 +36,10 @@ const AnimatedComponent = styled.div`
 export default function LoadRom() {
     const romContext = useContext(RomContext);
 
-    function renderLocalRomButton(title, filename) {
+    function renderLocalRomButton(index, title) {
         return (
-            <RomButton title={title} onClick={() => romContext.loadLocalRom(filename)}
-                       active={romContext.rom === filename}/>
+            <RomButton title={`${index}. ${title}`} onClick={async () => await romContext.loadLocalRom(index)}
+                       active={romContext.selected === index}/>
         );
     }
 
@@ -47,13 +47,13 @@ export default function LoadRom() {
         <Portrait>
             <Section>
                 <Message>Select ROM</Message>
-                {renderLocalRomButton('1. What Remains', 'whatremains-1.0.2.zip')}
-                {renderLocalRomButton('2. TNOTFS', 'The Ninja of the 4 Seasons_V1.1.zip')}
+                {renderLocalRomButton(1, 'What Remains', 'whatremains-1.0.2.zip')}
+                {renderLocalRomButton(2, 'TNOTFS', 'The Ninja of the 4 Seasons_V1.1.zip')}
                 <RomButton title="3. <Load ROM>"/>
             </Section>
             <Section>
                 <AnimatedComponent>
-                    <Message hide={romContext.rom === undefined}>Rotate device to play!</Message>
+                    <Message hide={romContext.selected === undefined}>Rotate device to play!</Message>
                 </AnimatedComponent>
             </Section>
         </Portrait>
