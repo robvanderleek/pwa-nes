@@ -28,11 +28,19 @@ export const EmulatorArea = styled(Area)`
     width: 50%;
 `;
 
-export const StyledButton = styled.button`
+export const NoUserSelectButton = styled.button`
     user-select: none;
 `;
 
-export const Message = styled.h2`
+export const NoUserSelectLabel = styled.label`
+    user-select: none;
+`;
+
+export const LargeMessage = styled.h2`
     text-align: center;
     visibility: ${props => props.hide ? 'hidden' : 'visible'};
+`;
+
+export const Message = styled.span`
+    text-align: center;
 `;

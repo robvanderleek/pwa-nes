@@ -1,10 +1,15 @@
-import {Main, Message} from "../Styles";
+import {Main, LargeMessage, Message} from "../Styles";
 import Button from "../components/Button";
 import styled, {keyframes} from "styled-components";
 import {useContext} from "react";
 import {RomContext} from "../context/RomContext";
+import FileInput from "../components/FileInput";
 
-const RomButton = styled(Button)`
+const SelectRomButton = styled(Button)`
+    width: 75%;
+`;
+
+const LoadRomButton = styled(FileInput)`
     width: 75%;
 `;
 
@@ -19,6 +24,7 @@ const Section = styled.div`
     flex-direction: column;
     width: 100%;
     align-items: center;
+    padding: 20px;
 `;
 
 function blinkingEffect() {
@@ -30,30 +36,60 @@ function blinkingEffect() {
 }
 
 const AnimatedComponent = styled.div`
-  animation: ${blinkingEffect} 1s linear infinite;
+    animation: ${blinkingEffect} 1s linear infinite;
 `
+
+const ButtonTitle = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
 
 export default function LoadRom() {
     const romContext = useContext(RomContext);
 
+    function renderRomTitle(index, title) {
+        return (
+            <ButtonTitle>
+                <span>{`${index}.`}</span><span>{title}</span><span><i className="nes-icon close is-small"/></span>
+            </ButtonTitle>
+        );
+    }
+
     function renderLocalRomButton(index, title) {
         return (
-            <RomButton title={`${index}. ${title}`} onClick={async () => await romContext.loadLocalRom(index)}
-                       active={romContext.selected === index}/>
+            <SelectRomButton title={renderRomTitle(index, title)}
+                             onClick={async () => await romContext.loadLocalRom(index)}
+                             active={romContext.selected === index}/>
+        );
+    }
+
+    function renderLoadRomButton(index) {
+        return (
+            <LoadRomButton title={renderRomTitle(index, `<Load ROM>`)}
+                           handleContent={content => console.log(content)}/>
         );
     }
 
     return (
         <Portrait>
             <Section>
-                <Message>Select ROM</Message>
-                {renderLocalRomButton(1, 'What Remains', 'whatremains-1.0.2.zip')}
-                {renderLocalRomButton(2, 'TNOTFS', 'The Ninja of the 4 Seasons_V1.1.zip')}
-                <RomButton title="3. <Load ROM>"/>
+                <LargeMessage>Welcome to</LargeMessage>
+                <LargeMessage>PWA NES</LargeMessage>
+            </Section>
+            <Section>
+                <Message>
+                    If you like this app please click here to <i className="nes-icon is-small star"></i> it on GitHub :)
+                </Message>
+            </Section>
+            <Section>
+                <LargeMessage>Select slot</LargeMessage>
+                {renderLocalRomButton(1, 'Streemerz')}
+                {renderLoadRomButton(2)}
+                {renderLoadRomButton(3)}
             </Section>
             <Section>
                 <AnimatedComponent>
-                    <Message hide={romContext.selected === undefined}>Rotate device to play!</Message>
+                    <LargeMessage hide={romContext.selected === undefined}>Rotate device to play!</LargeMessage>
                 </AnimatedComponent>
             </Section>
         </Portrait>

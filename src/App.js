@@ -3,7 +3,7 @@ import Emulator from "./jsnes/Emulator";
 import TouchController from "./TouchController";
 import LeftGamePad from "./LeftGamePad";
 import RightGamePad from "./RightGamePad";
-import {EmulatorArea, GamepadArea, Main, Message} from "./Styles";
+import {EmulatorArea, GamepadArea, Main, LargeMessage} from "./Styles";
 import LoadRom from "./views/LoadRom";
 import Button from "./components/Button";
 import {RomContext} from "./context/RomContext";
@@ -55,9 +55,9 @@ export default function App() {
         return result;
     }
 
-    const renderNonTouchDevice = () => <Main><Message>Please view this on a mobile device</Message></Main>;
+    const renderNonTouchDevice = () => <Main><LargeMessage>Please view this on a mobile device</LargeMessage></Main>;
 
-    const renderNoRomSelected = () => <Main><Message>Please select a ROM to play</Message></Main>;
+    const renderNoRomSelected = () => <Main><LargeMessage>Please select a ROM to play</LargeMessage></Main>;
 
     function renderGame() {
         return (

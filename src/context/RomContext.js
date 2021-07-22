@@ -1,6 +1,5 @@
 import React, {Component} from "react";
-import whatremains from "../static/whatremains-1.0.2.zip";
-import tnot4s from '../static/The Ninja of the 4 Seasons_V1.1.zip';
+import streemerz from "../static/streemerz-v02.zip";
 import {unzip} from "unzipit";
 
 export const RomContext = React.createContext({});
@@ -13,7 +12,6 @@ export class RomContextProvider extends Component {
             selected: undefined,
             slot1: this.loadLocalStorageSlot(1),
             slot2: this.loadLocalStorageSlot(2),
-            slot3: this.loadLocalStorageSlot(3),
         }
     }
 
@@ -38,13 +36,10 @@ export class RomContextProvider extends Component {
     }
 
     loadLocalRom = async (index) => {
-        let romData;
         if (index === 1) {
-            romData = await this.loadRom(whatremains);
-        } else {
-            romData = await this.loadRom(tnot4s);
+            const romData = await this.loadRom(streemerz);
+            this.setState({selected: index, romData: romData});
         }
-        this.setState({selected: index, romData: romData});
     }
 
     render() {
