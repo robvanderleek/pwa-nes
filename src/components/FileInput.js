@@ -16,7 +16,7 @@ export default function FileInput(props) {
         if (file) {
             const fileReader = new FileReader();
             fileReader.onloadend = handleFile;
-            fileReader.readAsBinaryString(file);
+            fileReader.readAsArrayBuffer(file);
         }
     }, [file, handleContent])
 

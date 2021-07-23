@@ -67,8 +67,8 @@ export default function App() {
                     <LeftGamePad touchController={controller}/>
                 </GamepadArea>
                 <EmulatorArea>
-                    {romContext.romData &&
-                    <Emulator romData={romContext.romData} controller={controller} paused={true}/>}
+                    {romContext.rom &&
+                    <Emulator romData={romContext.rom.data} controller={controller} paused={true}/>}
                 </EmulatorArea>
                 <GamepadArea>
                     <i style={{position: 'fixed', right: '15px', top: '15px'}} className="nes-icon close is-medium"/>
@@ -85,7 +85,7 @@ export default function App() {
         if (orientation === 'portrait') {
             return (<LoadRom/>);
         } else {
-            if (romContext.selected) {
+            if (romContext.selected !== undefined) {
                 return renderGame();
             } else {
                 return renderNoRomSelected();

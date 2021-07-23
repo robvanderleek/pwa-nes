@@ -1,4 +1,4 @@
-import {Main, LargeMessage, Message} from "../Styles";
+import {LargeMessage, Main, Message} from "../Styles";
 import Button from "../components/Button";
 import styled, {keyframes} from "styled-components";
 import {useContext} from "react";
@@ -48,26 +48,33 @@ export default function LoadRom() {
     const romContext = useContext(RomContext);
 
     function renderRomTitle(index, title) {
+        let deleteButton;
+        if (index === 0 || romContext.roms[index] === undefined) {
+            deleteButton = <i style={{visibility: 'hidden'}} className="nes-icon close is-small"/>
+        } else {
+            deleteButton = <i className="nes-icon close is-small"/>;
+        }
         return (
             <ButtonTitle>
-                <span>{`${index}.`}</span><span>{title}</span><span><i className="nes-icon close is-small"/></span>
+                <span>{`${index + 1}.`}</span><span>{title}</span><span>{deleteButton}</span>
             </ButtonTitle>
         );
     }
 
-    function renderLocalRomButton(index, title) {
-        return (
-            <SelectRomButton title={renderRomTitle(index, title)}
-                             onClick={async () => await romContext.loadLocalRom(index)}
-                             active={romContext.selected === index}/>
-        );
-    }
-
-    function renderLoadRomButton(index) {
-        return (
-            <LoadRomButton title={renderRomTitle(index, `<Load ROM>`)}
-                           handleContent={content => console.log(content)}/>
-        );
+    function renderRomButton(index) {
+        const romName = romContext.roms[index];
+        if (romName) {
+            return (
+                <SelectRomButton title={renderRomTitle(index, romName)}
+                                 onClick={async () => await romContext.loadRom(index)}
+                                 active={romContext.selected === index}/>
+            );
+        } else {
+            return (
+                <LoadRomButton title={renderRomTitle(index, `<Load ROM>`)}
+                               handleContent={(romName, data) => romContext.addRom(index, romName, data)}/>
+            );
+        }
     }
 
     return (
@@ -83,9 +90,9 @@ export default function LoadRom() {
             </Section>
             <Section>
                 <LargeMessage>Select slot</LargeMessage>
-                {renderLocalRomButton(1, 'Streemerz')}
-                {renderLoadRomButton(2)}
-                {renderLoadRomButton(3)}
+                {renderRomButton(0)}
+                {renderRomButton(1)}
+                {renderRomButton(2)}
             </Section>
             <Section>
                 <AnimatedComponent>
