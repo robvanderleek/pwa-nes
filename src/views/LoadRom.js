@@ -49,7 +49,7 @@ export default function LoadRom() {
 
     function renderRomTitle(index, title) {
         let deleteButton;
-        if (index === 0 || romContext.roms[index] === undefined) {
+        if (index === 0 || romContext.slots[index] === undefined) {
             deleteButton = <i style={{visibility: 'hidden'}} className="nes-icon close is-small"/>
         } else {
             deleteButton = <i className="nes-icon close is-small"/>;
@@ -62,11 +62,11 @@ export default function LoadRom() {
     }
 
     function renderRomButton(index) {
-        const romName = romContext.roms[index];
-        if (romName) {
+        const rom = romContext.slots[index];
+        if (rom) {
             return (
-                <SelectRomButton title={renderRomTitle(index, romName)}
-                                 onClick={async () => await romContext.loadRom(index)}
+                <SelectRomButton title={renderRomTitle(index, rom.name)}
+                                 onClick={async () => await romContext.selectSlot(index)}
                                  active={romContext.selected === index}/>
             );
         } else {

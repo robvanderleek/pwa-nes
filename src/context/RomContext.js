@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import streemerz from "../static/streemerz-v02.zip";
 import {unzip} from "unzipit";
+import {prettifyRomName} from "../utils";
 
 export const RomContext = React.createContext({});
 
@@ -10,14 +11,21 @@ export class RomContextProvider extends Component {
         super(props);
         this.state = {
             selected: undefined,
-            roms: ['Streemerz', undefined, undefined]
+            slots: [this.loadSlot(0), this.loadSlot(1), this.loadSlot(2)],
+        }
+    }
+
+    async componentDidMount() {
+        const {slots} = this.state;
+        if (slots[0] === undefined) {
+            const romData = await this.loadZippedRomData(streemerz);
+            this.saveSlot(0, 'Streemerz', romData);
         }
     }
 
     loadZippedRomData = async (data) => {
         const unzipped = await unzip(data);
         const firstEntry = Object.keys(unzipped.entries)[0];
-        console.log(firstEntry);
         return this.arrayBufferToString(await unzipped.entries[firstEntry].arrayBuffer());
     }
 
@@ -30,7 +38,7 @@ export class RomContextProvider extends Component {
         return result
     }
 
-    loadRomSlot = (index) => {
+    loadSlot = (index) => {
         const slotKey = `SLOT_${index}`;
         const item = localStorage.getItem(slotKey);
         if (item) {
@@ -40,38 +48,27 @@ export class RomContextProvider extends Component {
         }
     }
 
-    saveRomSlot = (index, data) => {
+    saveSlot = (index, name, data) => {
+        const {slots} = this.state;
         const slotKey = `SLOT_${index}`;
-        localStorage.setItem(slotKey, JSON.stringify({data: data}));
+        const rom = {name: prettifyRomName(name), data: data};
+        localStorage.setItem(slotKey, JSON.stringify(rom));
+        slots[index] = rom;
+        this.setState({slots: slots});
     }
 
-    loadRom = async (index) => {
-        const rom = this.loadRomSlot(index);
-        if (index === 0) {
-            if (rom) {
-                this.setState({selected: index, rom: rom});
-            } else {
-                const romData = await this.loadZippedRomData(streemerz);
-                this.saveRomSlot(index, romData);
-                this.setState({selected: index, rom: {data: romData}});
-            }
-        } else if (rom) {
-            this.setState({selected: index, rom: rom});
-        }
+    selectSlot = (index) => {
+        this.setState({selected: index});
     }
 
     addRom = async (index, name, data) => {
         if (name.toLowerCase().endsWith(".zip")) {
-            const romData = this.loadZippedRomData(data);
-            this.saveRomSlot(index, romData);
+            const romData = await this.loadZippedRomData(data);
+            this.saveSlot(index, name, romData);
         } else {
             const romData = this.arrayBufferToString(data);
-            this.saveRomSlot(index, romData);
+            this.saveSlot(index, name, romData);
         }
-        const {roms} = this.state;
-        roms[index] = name;
-        this.setState({roms: roms});
-        await this.loadRom(index);
     }
 
     render() {
@@ -80,7 +77,7 @@ export class RomContextProvider extends Component {
             <RomContext.Provider value={{
                 ...this.state,
                 addRom: this.addRom,
-                loadRom: this.loadRom,
+                selectSlot: this.selectSlot,
             }}>
                 {children}
             </RomContext.Provider>

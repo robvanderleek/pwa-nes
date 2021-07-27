@@ -3,7 +3,7 @@ import Emulator from "./jsnes/Emulator";
 import TouchController from "./TouchController";
 import LeftGamePad from "./LeftGamePad";
 import RightGamePad from "./RightGamePad";
-import {EmulatorArea, GamepadArea, Main, LargeMessage} from "./Styles";
+import {EmulatorArea, GamepadArea, LargeMessage, Main} from "./Styles";
 import LoadRom from "./views/LoadRom";
 import Button from "./components/Button";
 import {RomContext} from "./context/RomContext";
@@ -67,8 +67,9 @@ export default function App() {
                     <LeftGamePad touchController={controller}/>
                 </GamepadArea>
                 <EmulatorArea>
-                    {romContext.rom &&
-                    <Emulator romData={romContext.rom.data} controller={controller} paused={true}/>}
+                    {romContext.selected !== undefined &&
+                    <Emulator romData={romContext.slots[romContext.selected].data} controller={controller}
+                              paused={true}/>}
                 </EmulatorArea>
                 <GamepadArea>
                     <i style={{position: 'fixed', right: '15px', top: '15px'}} className="nes-icon close is-medium"/>
