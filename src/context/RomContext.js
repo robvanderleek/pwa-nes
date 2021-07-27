@@ -71,12 +71,23 @@ export class RomContextProvider extends Component {
         }
     }
 
+    removeRom = (index) => {
+        const {selected, slots} = this.state;
+        slots[index] = undefined;
+        if (index === selected) {
+            this.setState({selected: undefined, slots: slots});
+        } else {
+            this.setState({slots: slots});
+        }
+    }
+
     render() {
         const {children} = this.props;
         return (
             <RomContext.Provider value={{
                 ...this.state,
                 addRom: this.addRom,
+                removeRom: this.removeRom,
                 selectSlot: this.selectSlot,
             }}>
                 {children}

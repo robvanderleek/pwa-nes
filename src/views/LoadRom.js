@@ -1,17 +1,8 @@
 import {LargeMessage, Main, Message} from "../Styles";
-import Button from "../components/Button";
 import styled, {keyframes} from "styled-components";
+import RomButton from "../components/RomButton";
 import {useContext} from "react";
 import {RomContext} from "../context/RomContext";
-import FileInput from "../components/FileInput";
-
-const SelectRomButton = styled(Button)`
-    width: 75%;
-`;
-
-const LoadRomButton = styled(FileInput)`
-    width: 75%;
-`;
 
 const Portrait = styled(Main)`
     flex-direction: column;
@@ -39,44 +30,8 @@ const AnimatedComponent = styled.div`
     animation: ${blinkingEffect} 1s linear infinite;
 `
 
-const ButtonTitle = styled.div`
-    display: flex;
-    justify-content: space-between;
-`;
-
 export default function LoadRom() {
     const romContext = useContext(RomContext);
-
-    function renderRomTitle(index, title) {
-        let deleteButton;
-        if (index === 0 || romContext.slots[index] === undefined) {
-            deleteButton = <i style={{visibility: 'hidden'}} className="nes-icon close is-small"/>
-        } else {
-            deleteButton = <i className="nes-icon close is-small"/>;
-        }
-        return (
-            <ButtonTitle>
-                <span>{`${index + 1}.`}</span><span>{title}</span><span>{deleteButton}</span>
-            </ButtonTitle>
-        );
-    }
-
-    function renderRomButton(index) {
-        const rom = romContext.slots[index];
-        if (rom) {
-            return (
-                <SelectRomButton title={renderRomTitle(index, rom.name)}
-                                 onClick={async () => await romContext.selectSlot(index)}
-                                 active={romContext.selected === index}/>
-            );
-        } else {
-            return (
-                <LoadRomButton title={renderRomTitle(index, `<Load ROM>`)}
-                               handleContent={(romName, data) => romContext.addRom(index, romName, data)}/>
-            );
-        }
-    }
-
     return (
         <Portrait>
             <Section>
@@ -85,14 +40,14 @@ export default function LoadRom() {
             </Section>
             <Section>
                 <Message>
-                    If you like this app please click here to <i className="nes-icon is-small star"></i> it on GitHub :)
+                    If you like this app please click here to <i className="nes-icon is-small star"/> it on GitHub :)
                 </Message>
             </Section>
             <Section>
                 <LargeMessage>Select slot</LargeMessage>
-                {renderRomButton(0)}
-                {renderRomButton(1)}
-                {renderRomButton(2)}
+                <RomButton index={0}/>
+                <RomButton index={1}/>
+                <RomButton index={2}/>
             </Section>
             <Section>
                 <AnimatedComponent>
