@@ -57,7 +57,7 @@ export default function App() {
 
     const renderNonTouchDevice = () => <Main><LargeMessage>Please view this on a mobile device</LargeMessage></Main>;
 
-    const renderNoRomSelected = () => <Main><LargeMessage>Please select a ROM to play</LargeMessage></Main>;
+    const renderNoRomSelected = () => <Main><LargeMessage>Rotate to select a ROM to play</LargeMessage></Main>;
 
     function renderGame() {
         return (

@@ -27,8 +27,10 @@ export default function RomButton(props) {
     const romContext = useContext(RomContext);
 
     function handleDeleteClick(event) {
-        romContext.removeRom(index);
-        event.stopPropagation();
+        if (index > 0) {
+            romContext.removeRom(index);
+            event.stopPropagation();
+        }
     }
 
     function renderDeleteButton(index) {
