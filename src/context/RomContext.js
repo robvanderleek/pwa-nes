@@ -17,7 +17,7 @@ export class RomContextProvider extends Component {
 
     async componentDidMount() {
         const {slots} = this.state;
-        if (slots[0] === undefined) {
+        if (slots[0] === undefined || slots[0].name !== 'Streemerz') {
             const romData = await this.loadZippedRomData(streemerz);
             this.saveSlot(0, 'Streemerz', romData);
         }
@@ -69,6 +69,7 @@ export class RomContextProvider extends Component {
             const romData = this.arrayBufferToString(data);
             this.saveSlot(index, name, romData);
         }
+        this.selectSlot(index);
     }
 
     removeRom = (index) => {

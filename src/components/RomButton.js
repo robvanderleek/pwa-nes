@@ -26,6 +26,11 @@ export default function RomButton(props) {
     const {index} = props;
     const romContext = useContext(RomContext);
 
+    function handleDeleteClick(event) {
+        romContext.removeRom(index);
+        event.stopPropagation();
+    }
+
     function renderDeleteButton(index) {
         let deleteButton;
         const classNames = 'nes-icon close is-small';
@@ -34,7 +39,7 @@ export default function RomButton(props) {
         } else {
             deleteButton = <i className={classNames}/>;
         }
-        return (<DeleteButton onClick={() => romContext.removeRom(index)}>{deleteButton}</DeleteButton>);
+        return (<DeleteButton onClick={(e) => handleDeleteClick(e)}>{deleteButton}</DeleteButton>);
     }
 
     function renderRomTitle(index, title) {
