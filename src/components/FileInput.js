@@ -36,7 +36,7 @@ export default function FileInput(props) {
                            onTouchEnd={() => onUp && onUp(title)}
         >
             <span>{title}</span>
-            <input type="file" accept="*.nes"
+            <input type="file" accept="application/octet-stream"
                    onChange={handleOnChange}/>
         </NoUserSelectLabel>
     );
