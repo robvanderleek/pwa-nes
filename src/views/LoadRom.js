@@ -3,6 +3,7 @@ import styled, {keyframes} from "styled-components";
 import RomButton from "../components/RomButton";
 import {useContext} from "react";
 import {RomContext} from "../context/RomContext";
+import Hyperlink from "../components/Hyperlink";
 
 const Portrait = styled(Main)`
     flex-direction: column;
@@ -40,7 +41,10 @@ export default function LoadRom() {
             </Section>
             <Section>
                 <Message>
-                    If you like this app please click here to <i className="nes-icon is-small star"/> it on GitHub :)
+                    <Hyperlink href="https://github.com/robvanderleek/pwa-nes">
+                        If you like this app please click here to <i className="nes-icon is-small star"/> it on GitHub
+                        :)
+                    </Hyperlink>
                 </Message>
             </Section>
             <Section>
