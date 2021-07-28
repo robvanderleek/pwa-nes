@@ -36,7 +36,7 @@ export default function FileInput(props) {
                            onTouchEnd={() => onUp && onUp(title)}
         >
             <span>{title}</span>
-            <input type="file" accept="application/zip,application/octet-stream,.zip,.nes,.rom"
+            <input type="file" accept="application/zip,application/*,.zip,.nes,.rom"
                    onChange={handleOnChange}/>
         </NoUserSelectLabel>
     );

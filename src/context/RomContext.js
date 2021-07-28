@@ -61,6 +61,8 @@ export class RomContextProvider extends Component {
         this.setState({selected: index});
     }
 
+    unselectSlot = () => this.setState({selected: undefined});
+
     addRom = async (index, name, data) => {
         if (name.toLowerCase().endsWith(".zip")) {
             const romData = await this.loadZippedRomData(data);
@@ -90,6 +92,7 @@ export class RomContextProvider extends Component {
                 addRom: this.addRom,
                 removeRom: this.removeRom,
                 selectSlot: this.selectSlot,
+                unselectSlot: this.unselectSlot
             }}>
                 {children}
             </RomContext.Provider>

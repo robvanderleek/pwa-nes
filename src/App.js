@@ -1,14 +1,8 @@
 import {useContext, useEffect, useState} from "react";
-import Emulator from "./jsnes/Emulator";
-import TouchController from "./TouchController";
-import LeftGamePad from "./LeftGamePad";
-import RightGamePad from "./RightGamePad";
-import {EmulatorArea, GamepadArea, LargeMessage, Main} from "./Styles";
+import {LargeMessage, Main} from "./Styles";
 import LoadRom from "./views/LoadRom";
-import Button from "./components/Button";
 import {RomContext} from "./context/RomContext";
-
-const controller = new TouchController();
+import Game from "./views/Game";
 
 export default function App() {
     const [initializing, setInitializing] = useState(false);
@@ -59,27 +53,6 @@ export default function App() {
 
     const renderNoRomSelected = () => <Main><LargeMessage>Rotate to select a ROM to play</LargeMessage></Main>;
 
-    function renderGame() {
-        return (
-            <Main>
-                <GamepadArea>
-                    <Button onDown={controller.handleButtonDown} onUp={controller.handleButtonUp} title="Select"/>
-                    <LeftGamePad touchController={controller}/>
-                </GamepadArea>
-                <EmulatorArea>
-                    {romContext.selected !== undefined &&
-                    <Emulator romData={romContext.slots[romContext.selected].data} controller={controller}
-                              paused={true}/>}
-                </EmulatorArea>
-                <GamepadArea>
-                    <i style={{position: 'fixed', right: '15px', top: '15px'}} className="nes-icon close is-medium"/>
-                    <Button onDown={controller.handleButtonDown} onUp={controller.handleButtonUp} title="Start"/>
-                    <RightGamePad touchController={controller}/>
-                </GamepadArea>
-            </Main>
-        );
-    }
-
     if (initializing) {
         return null;
     } else if (isTouchDevice) {
@@ -87,7 +60,7 @@ export default function App() {
             return (<LoadRom/>);
         } else {
             if (romContext.selected !== undefined) {
-                return renderGame();
+                return (<Game/>);
             } else {
                 return renderNoRomSelected();
             }

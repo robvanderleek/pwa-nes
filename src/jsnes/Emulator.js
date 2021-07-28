@@ -116,7 +116,6 @@ class Emulator extends Component {
 
         this.props.controller.setOnButtonDown(this.nes.buttonDown);
         this.props.controller.setOnButtonUp(this.nes.buttonUp);
-
         this.nes.loadROM(this.props.romData);
         this.start();
     }
@@ -142,20 +141,31 @@ class Emulator extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.paused !== prevProps.paused) {
-            if (this.props.paused) {
+        const {paused, muted} = this.props;
+        if (paused !== prevProps.paused) {
+            if (paused) {
                 this.stop();
             } else {
                 this.start();
             }
         }
-
+        if (muted !== prevProps.muted) {
+            if (muted) {
+                this.speakers.stop();
+            } else {
+                this.speakers.start();
+            }
+        }
         // TODO: handle changing romData
     }
 
     start = () => {
+        const {muted} = this.props;
         this.frameTimer.start();
-        this.speakers.start();
+        console.log('MUTED: ' + muted);
+        if (!muted) {
+            this.speakers.start();
+        }
         this.fpsInterval = setInterval(() => {
             log.debug(`FPS: ${this.nes.getFPS()}`);
         }, 1000);
@@ -177,8 +187,13 @@ class Emulator extends Component {
 
 Emulator.propTypes = {
     paused: PropTypes.bool,
+    muted: PropTypes.bool,
     romData: PropTypes.string.isRequired,
     controller: PropTypes.object
+};
+
+Emulator.defaultProps = {
+    muted: true
 };
 
 export default Emulator;
