@@ -50,11 +50,25 @@ export class RomContextProvider extends Component {
 
     saveSlot = (index, name, data) => {
         const {slots} = this.state;
-        const slotKey = `SLOT_${index}`;
-        const rom = {name: prettifyRomName(name), data: data};
-        localStorage.setItem(slotKey, JSON.stringify(rom));
+        const rom = {name: prettifyRomName(name), romData: data};
+        this.saveRomToLocalStorage(index, rom);
         slots[index] = rom;
         this.setState({slots: slots});
+    }
+
+    saveRomToLocalStorage = (index, rom) => {
+        const slotKey = `SLOT_${index}`;
+        localStorage.setItem(slotKey, JSON.stringify(rom));
+    }
+
+    updateSlot = (index, json) => {
+        const {slots} = this.state;
+        const rom = slots[index];
+        rom.cpu = json.cpu;
+        rom.ppu = json.ppu;
+        rom.mmap = json.mmap;
+        this.setState({slots: slots});
+        this.saveRomToLocalStorage(index, rom);
     }
 
     selectSlot = (index) => {
@@ -92,7 +106,8 @@ export class RomContextProvider extends Component {
                 addRom: this.addRom,
                 removeRom: this.removeRom,
                 selectSlot: this.selectSlot,
-                unselectSlot: this.unselectSlot
+                unselectSlot: this.unselectSlot,
+                updateSlot: this.updateSlot
             }}>
                 {children}
             </RomContext.Provider>

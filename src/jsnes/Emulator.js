@@ -40,6 +40,8 @@ class Emulator extends Component {
     }
 
     componentDidMount() {
+        const {romContext} = this.props;
+
         // Initial layout
         this.fitInParent();
 
@@ -116,11 +118,19 @@ class Emulator extends Component {
 
         this.props.controller.setOnButtonDown(this.nes.buttonDown);
         this.props.controller.setOnButtonUp(this.nes.buttonUp);
-        this.nes.loadROM(this.props.romData);
+
+        const slot = romContext.slots[romContext.selected];
+        if (slot.cpu) {
+            this.nes.fromJSON(slot);
+        } else {
+            this.nes.loadROM(this.props.romData);
+        }
         this.start();
     }
 
     componentWillUnmount() {
+        const {romContext} = this.props;
+        romContext.updateSlot(romContext.selected, this.nes.toJSON());
         this.stop();
 
         // Unbind keyboard
@@ -162,7 +172,6 @@ class Emulator extends Component {
     start = () => {
         const {muted} = this.props;
         this.frameTimer.start();
-        console.log('MUTED: ' + muted);
         if (!muted) {
             this.speakers.start();
         }
@@ -189,7 +198,8 @@ Emulator.propTypes = {
     paused: PropTypes.bool,
     muted: PropTypes.bool,
     romData: PropTypes.string.isRequired,
-    controller: PropTypes.object
+    controller: PropTypes.object,
+    romContext: PropTypes.object.isRequired
 };
 
 Emulator.defaultProps = {

@@ -36,3 +36,7 @@ a:hover {
     color: white;
     text-decoration: none;
 }
+
+.nes-icon.close.is-dark::before {
+    color: white;
+}

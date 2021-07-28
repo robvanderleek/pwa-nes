@@ -6,11 +6,11 @@ import FileInput from "./FileInput";
 import PropTypes from "prop-types";
 
 const SelectRomButton = styled(Button)`
-    width: 75%;
+    width: 90%;
 `;
 
 const LoadRomButton = styled(FileInput)`
-    width: 75%;
+    width: 90%;
 `;
 
 const ButtonTitle = styled.div`
@@ -52,17 +52,25 @@ export default function RomButton(props) {
         );
     }
 
+    async function handleClick(index) {
+        if (romContext.selected === index) {
+            romContext.unselectSlot();
+        } else {
+            await romContext.selectSlot(index);
+        }
+    }
+
     function renderRomButton(index) {
         const rom = romContext.slots[index];
         if (rom) {
             return (
                 <SelectRomButton title={renderRomTitle(index, rom.name)}
-                                 onClick={async () => await romContext.selectSlot(index)}
+                                 onClick={async () => handleClick(index)}
                                  active={romContext.selected === index}/>
             );
         } else {
             return (
-                <LoadRomButton title={renderRomTitle(index, `<Load ROM>`)}
+                <LoadRomButton title={renderRomTitle(index, `<Load ROM.zip>`)}
                                handleContent={(romName, data) => romContext.addRom(index, romName, data)}/>
             );
         }

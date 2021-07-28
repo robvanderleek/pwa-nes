@@ -30,7 +30,8 @@ export default function Game() {
             <GamepadArea>
                 <UpperLeft>
                     <label>
-                        <input type="checkbox" className="nes-checkbox is-dark" checked={!muted} onChange={() => setMuted(!muted)}/>
+                        <input type="checkbox" className="nes-checkbox is-dark" checked={!muted}
+                               onChange={() => setMuted(!muted)}/>
                         <span>Sound</span>
                     </label>
                 </UpperLeft>
@@ -39,11 +40,11 @@ export default function Game() {
             </GamepadArea>
             <EmulatorArea>
                 {romContext.selected !== undefined &&
-                <Emulator romData={romContext.slots[romContext.selected].data} controller={controller}
-                          paused={true} muted={muted}/>}
+                <Emulator romData={romContext.slots[romContext.selected].romData} controller={controller}
+                          paused={false} muted={muted} romContext={romContext}/>}
             </EmulatorArea>
             <GamepadArea>
-                <UpperRight onClick={romContext.unselectSlot} className="nes-icon close is-small"/>
+                <UpperRight onClick={romContext.unselectSlot} className="nes-icon close is-dark is-small"/>
                 <Button onDown={controller.handleButtonDown} onUp={controller.handleButtonUp} title="Start"/>
                 <RightGamePad touchController={controller}/>
             </GamepadArea>
