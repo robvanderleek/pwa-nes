@@ -36,7 +36,7 @@ export default function FileInput(props) {
                            onTouchEnd={() => onUp && onUp(title)}
         >
             <span>{title}</span>
-            <input type="file" accept="application/pdf"
+            <input type="file" accept="all/allfiles"
                    onChange={handleOnChange}/>
         </NoUserSelectLabel>
     );
