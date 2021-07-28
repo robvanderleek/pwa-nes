@@ -4,6 +4,7 @@ import RomButton from "../components/RomButton";
 import {useContext} from "react";
 import {RomContext} from "../context/RomContext";
 import Hyperlink from "../components/Hyperlink";
+import Version from "../version";
 
 const Portrait = styled(Main)`
     flex-direction: column;
@@ -57,6 +58,11 @@ export default function LoadRom() {
                 <AnimatedComponent>
                     <LargeMessage hide={romContext.selected === undefined}>Rotate device to play!</LargeMessage>
                 </AnimatedComponent>
+            </Section>
+            <Section>
+                <span style={{color: '#444444'}}>
+                    Version {Version.revision}
+                </span>
             </Section>
         </Portrait>
     );
