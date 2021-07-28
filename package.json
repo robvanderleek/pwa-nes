@@ -33,7 +33,7 @@
     "git-info": "node src/generate-version.js > src/version.js",
     "start": "yarn git-info && react-scripts start",
     "build": "yarn git-info && react-scripts build",
-    "test": "react-scripts test",
+    "test": "yarn git-info && react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

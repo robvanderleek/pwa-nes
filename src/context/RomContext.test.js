@@ -32,7 +32,7 @@ it('should save a rom to a slot', function () {
 
     expect(window.localStorage.getItem('SLOT_0')).toBeNull();
 
-    provider.saveRomSlot(0, 'DonkeyK.nes', '0123456789abcdef');
+    provider.saveSlot(0, 'DonkeyK.nes', '0123456789abcdef');
 
     expect(window.localStorage.getItem('SLOT_0')).toBeDefined();
 });
