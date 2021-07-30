@@ -44,7 +44,7 @@ export default function Game() {
                           paused={false} muted={muted} romContext={romContext}/>}
             </EmulatorArea>
             <GamepadArea>
-                <UpperRight onClick={romContext.unselectSlot} className="nes-icon close is-dark is-small"/>
+                <UpperRight onClick={romContext.unselectSlot} className="nes-icon close is-dark is-medium"/>
                 <Button onDown={controller.handleButtonDown} onUp={controller.handleButtonUp} title="Start"/>
                 <RightGamePad touchController={controller}/>
             </GamepadArea>
