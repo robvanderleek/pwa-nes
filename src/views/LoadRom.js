@@ -5,6 +5,7 @@ import {useContext} from "react";
 import {RomContext} from "../context/RomContext";
 import Hyperlink from "../components/Hyperlink";
 import Version from "../version";
+import Marquee from "react-fast-marquee";
 
 const Portrait = styled(Main)`
     flex-direction: column;
@@ -34,6 +35,11 @@ const AnimatedComponent = styled.div`
 
 export default function LoadRom() {
     const romContext = useContext(RomContext);
+    const maqueeText = ` ` +
+        `You are running version ${Version.revision}. This is a Progressive Web App ✨ ` +
+        `If you're on iOS: in Safari tap the Share button in the browser and select "Add to Home Screen". ` +
+        `If you're on Android tap the ⋮ button next to the address field and select "Add to Home screen" ` +
+        `in the list of options that appears`;
     return (
         <Portrait>
             <Section>
@@ -60,8 +66,8 @@ export default function LoadRom() {
                 </AnimatedComponent>
             </Section>
             <Section>
-                <span style={{color: '#444444'}}>
-                    Version {Version.revision}
+                <span style={{width: '90%'}}>
+                    <Marquee pauseOnClick={true} gradient={false} speed="60">{maqueeText}</Marquee>
                 </span>
             </Section>
         </Portrait>
