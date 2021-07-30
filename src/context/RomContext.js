@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import streemerz from "../static/streemerz-v02.zip";
 import {unzip} from "unzipit";
 import {prettifyRomName} from "../utils";
+import Version from "../version";
 
 export const RomContext = React.createContext({});
 
@@ -17,7 +18,7 @@ export class RomContextProvider extends Component {
 
     async componentDidMount() {
         const {slots} = this.state;
-        if (slots[0] === undefined || slots[0].name !== 'Streemerz') {
+        if (slots[0] === undefined || slots[0].name !== 'Streemerz' || !this.isUpToDate()) {
             const romData = await this.loadZippedRomData(streemerz);
             this.saveSlot(0, 'Streemerz', romData);
         }
@@ -36,6 +37,25 @@ export class RomContextProvider extends Component {
             result += String.fromCharCode(array[i]);
         }
         return result
+    }
+
+    getVersion = () => {
+        return localStorage.getItem('PWA_NES_VERSION');
+    }
+
+    setVersion = () => {
+        return localStorage.setItem('PWA_NES_VERSION', Version.revision);
+    }
+
+    isUpToDate = () => {
+        const storedVersion = this.getVersion();
+        const version = Version.revision;
+        if (storedVersion === null || storedVersion !== version) {
+            console.log('New version loaded');
+            this.setVersion();
+            return false;
+        }
+        return true;
     }
 
     loadSlot = (index) => {
