@@ -46,3 +46,14 @@ test('get and set version', () => {
 
     expect(provider.getVersion()).toBeDefined();
 });
+
+test('remove rom', () => {
+    const provider = shallow(<RomContextProvider/>).instance();
+    provider.saveSlot(0, 'DonkeyK.nes', '0123456789abcdef');
+
+    expect(window.localStorage.getItem('SLOT_0')).toBeDefined();
+
+    provider.removeRom(0);
+
+    expect(window.localStorage.getItem('SLOT_0')).toBeNull();
+});

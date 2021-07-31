@@ -1,7 +1,7 @@
 import {LargeMessage, Main, Message} from "../Styles";
 import styled, {keyframes} from "styled-components";
 import RomButton from "../components/RomButton";
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import {RomContext} from "../context/RomContext";
 import Hyperlink from "../components/Hyperlink";
 import Version from "../version";
@@ -33,13 +33,28 @@ const AnimatedComponent = styled.div`
     animation: ${blinkingEffect} 1s linear infinite;
 `
 
+const readmeText = (
+    <Portrait>
+        <Section>This is a Progressive Web App ✨</Section>
+        <Section>
+            If you're on iOS: in Safari tap the Share button in the browser and select "Add to Home Screen"
+        </Section>
+        <Section>
+            If you're on Android tap the ⋮ button next to the address field and select "Add to Home screen" in the list
+            of options that appears
+        </Section>
+        <Section>Click anywhere on this screen to go back</Section>
+    </Portrait>
+);
+
 export default function LoadRom() {
     const romContext = useContext(RomContext);
-    const maqueeText = ` ` +
-        `You are running version ${Version.revision}. This is a Progressive Web App ✨ ` +
-        `If you're on iOS: in Safari tap the Share button in the browser and select "Add to Home Screen". ` +
-        `If you're on Android tap the ⋮ button next to the address field and select "Add to Home screen" ` +
-        `in the list of options that appears`;
+    const [showReadme, setShowReadme] = useState(false);
+    const readme = <Main onClick={() => setShowReadme(false)}>{readmeText}</Main>;
+    if (showReadme) {
+        return readme;
+    }
+    const marqueeText = `You are running version ${Version.revision}. Click on this scrolling text for more information. `;
     return (
         <Portrait>
             <Section>
@@ -66,8 +81,8 @@ export default function LoadRom() {
                 </AnimatedComponent>
             </Section>
             <Section>
-                <span style={{width: '90%'}}>
-                    <Marquee pauseOnClick={true} gradient={false} speed="60">{maqueeText}</Marquee>
+                <span onClick={() => setShowReadme(true)} style={{width: '90%'}}>
+                    <Marquee pauseOnClick={true} gradient={false} speed="60">{marqueeText}</Marquee>
                 </span>
             </Section>
         </Portrait>

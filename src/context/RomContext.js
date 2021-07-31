@@ -59,8 +59,7 @@ export class RomContextProvider extends Component {
     }
 
     loadSlot = (index) => {
-        const slotKey = `SLOT_${index}`;
-        const item = localStorage.getItem(slotKey);
+        const item = localStorage.getItem(`SLOT_${index}`);
         if (item) {
             return JSON.parse(item);
         } else {
@@ -76,10 +75,7 @@ export class RomContextProvider extends Component {
         this.setState({slots: slots});
     }
 
-    saveRomToLocalStorage = (index, rom) => {
-        const slotKey = `SLOT_${index}`;
-        localStorage.setItem(slotKey, JSON.stringify(rom));
-    }
+    saveRomToLocalStorage = (index, rom) => localStorage.setItem(`SLOT_${index}`, JSON.stringify(rom));
 
     updateSlot = (index, json) => {
         const {slots} = this.state;
@@ -110,6 +106,7 @@ export class RomContextProvider extends Component {
 
     removeRom = (index) => {
         const {selected, slots} = this.state;
+        localStorage.removeItem(`SLOT_${index}`);
         slots[index] = undefined;
         if (index === selected) {
             this.setState({selected: undefined, slots: slots});
