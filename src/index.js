@@ -6,12 +6,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import "ulog"
 import {RomContextProvider} from "./context/RomContext";
+import {DeviceOrientationProvider} from "./context/DeviceOrientationContext";
 
 ReactDOM.render(
     <React.StrictMode>
-        <RomContextProvider>
-            <App/>
-        </RomContextProvider>
+        <DeviceOrientationProvider>
+            <RomContextProvider>
+                <App/>
+            </RomContextProvider>
+        </DeviceOrientationProvider>
     </React.StrictMode>,
     document.getElementById('root')
 );
