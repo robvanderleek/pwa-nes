@@ -6,14 +6,15 @@ import {RomContext} from "../context/RomContext";
 import Hyperlink from "../components/Hyperlink";
 import Version from "../version";
 import Marquee from "react-fast-marquee";
+import Readme from "./Readme";
 
-const Portrait = styled(Main)`
+export const Portrait = styled(Main)`
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
 `;
 
-const Section = styled.div`
+export const Section = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -33,24 +34,10 @@ const AnimatedComponent = styled.div`
     animation: ${blinkingEffect} 1s linear infinite;
 `
 
-const readmeText = (
-    <Portrait>
-        <Section>This is a Progressive Web App ✨</Section>
-        <Section>
-            If you're on iOS: in Safari tap the Share button in the browser and select "Add to Home Screen"
-        </Section>
-        <Section>
-            If you're on Android tap the ⋮ button next to the address field and select "Add to Home screen" in the list
-            of options that appears
-        </Section>
-        <Section>Click anywhere on this screen to go back</Section>
-    </Portrait>
-);
-
 export default function LoadRom() {
     const romContext = useContext(RomContext);
     const [showReadme, setShowReadme] = useState(false);
-    const readme = <Main onClick={() => setShowReadme(false)}>{readmeText}</Main>;
+    const readme = <Main onClick={() => setShowReadme(false)}><Readme/></Main>;
     if (showReadme) {
         return readme;
     }

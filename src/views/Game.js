@@ -20,6 +20,8 @@ const UpperRight = styled.i`
     position: fixed;
     right: 15px;
     top: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
 `
 
 export default function Game() {
