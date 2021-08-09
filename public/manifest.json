@@ -21,7 +21,7 @@
     {
       "src": "icon-360x360.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "360x360"
     }
   ],
   "start_url": ".",
