@@ -1,10 +1,14 @@
-import PropTypes from 'prop-types'
 import './RightGamePad.css';
+import TouchController from "./TouchController";
 
-export default function RightGamePad(props) {
+interface RightGamePasProps {
+    touchController: TouchController;
+}
+
+export default function RightGamePad(props: RightGamePasProps) {
     const {touchController} = props;
 
-    function renderButton(name) {
+    function renderButton(name: string) {
         return (
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end', transform: 'scale(1.5)'}}>
                 <div className="btn-border"
@@ -25,8 +29,4 @@ export default function RightGamePad(props) {
             {renderButton('A')}
         </div>
     );
-}
-
-RightGamePad.propTypes = {
-    touchController: PropTypes.object.isRequired
 }

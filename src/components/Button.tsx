@@ -1,6 +1,15 @@
 import {NoUserSelectButton} from "../Styles";
 import PropTypes from "prop-types";
 
+interface ButtonProps {
+    title: string;
+    onDown: PropTypes.func,
+    onUp: PropTypes.func,
+    active: PropTypes.bool,
+    className: PropTypes.string,
+    onClick: PropTypes.func
+}
+
 export default function Button(props) {
     const {title, onDown, onUp, active, className, onClick} = props;
     const classNames = active ? `nes-btn is-success ${className}` : `nes-btn ${className}`;
@@ -15,11 +24,3 @@ export default function Button(props) {
     );
 }
 
-Button.propTypes = {
-    title: PropTypes.any.isRequired,
-    onDown: PropTypes.func,
-    onUp: PropTypes.func,
-    active: PropTypes.bool,
-    className: PropTypes.string,
-    onClick: PropTypes.func
-}

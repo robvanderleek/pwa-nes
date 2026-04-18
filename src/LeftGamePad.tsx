@@ -1,10 +1,10 @@
 import './LeftGamePad.css';
-import PropTypes from "prop-types";
+import TouchController from "./TouchController";
 
-export default function LeftGamePad(props) {
+export default function LeftGamePad(props: {touchController:TouchController}) {
     const {touchController} = props;
 
-    function renderLfArrow(name) {
+    function renderLfArrow(name: string) {
         return (
             <div style={{position: 'absolute', right: 0, width: '32px', height: '100%'}}
                  onMouseDown={() => touchController.handleButtonDown(name)}
@@ -17,7 +17,7 @@ export default function LeftGamePad(props) {
         );
     }
 
-    function renderRhArrow(name) {
+    function renderRhArrow(name: string) {
         return (
             <div style={{position: 'absolute', left: 0, width: '32px', height: '100%'}}
                  onMouseDown={() => touchController.handleButtonDown(name)}
@@ -49,8 +49,4 @@ export default function LeftGamePad(props) {
             </div>
         </div>
     );
-}
-
-LeftGamePad.propTypes = {
-    touchController: PropTypes.object.isRequired
 }

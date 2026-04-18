@@ -38,6 +38,9 @@ export const NoUserSelectLabel = styled.label`
 
 export const LargeMessage = styled.h2`
     text-align: center;
+`;
+
+export const HideableLargeMessage = styled(LargeMessage)<{hide: boolean}>`
     visibility: ${props => props.hide ? 'hidden' : 'visible'};
 `;
 

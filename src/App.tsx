@@ -1,13 +1,12 @@
-import {useContext} from "react";
 import {LargeMessage, Main} from "./Styles";
 import LoadRom from "./views/LoadRom";
-import {RomContext} from "./context/RomContext";
 import Game from "./views/Game";
-import {DeviceOrientationContext} from "./context/DeviceOrientationContext";
+import {useDeviceOrientation} from "./context/DeviceOrientationContext";
+import {useRomContext} from "./context/RomContext";
 
 export default function App() {
-    const romContext = useContext(RomContext);
-    const {initializing, isTouchDevice, orientation} = useContext(DeviceOrientationContext);
+    const romContext = useRomContext();
+    const {initializing, isTouchDevice, orientation} = useDeviceOrientation();
 
     const renderNonTouchDevice = () => <Main><LargeMessage>Please view this on a mobile device</LargeMessage></Main>;
 
@@ -26,6 +25,12 @@ export default function App() {
             }
         }
     } else {
-        return renderNonTouchDevice();
+        // return renderNonTouchDevice();
+        if (romContext.selected !== undefined) {
+            console.log("Selected ROM:", romContext.slots);
+            return (<Game/>);
+        } else {
+            return renderNoRomSelected();
+        }
     }
 }

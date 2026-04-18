@@ -1,12 +1,12 @@
 import {EmulatorArea, GamepadArea, Main} from "../Styles";
 import Button from "../components/Button";
 import LeftGamePad from "../LeftGamePad";
-import Emulator from "../jsnes/Emulator";
 import RightGamePad from "../RightGamePad";
 import TouchController from "../TouchController";
-import {useContext, useState} from "react";
-import {RomContext} from "../context/RomContext";
+import {useEffect, useRef, useState} from "react";
 import styled from "styled-components";
+import {useRomContext} from "../context/RomContext";
+import {Browser} from "jsnes";
 
 const controller = new TouchController();
 
@@ -25,8 +25,22 @@ const UpperRight = styled.i`
 `
 
 export default function Game() {
-    const romContext = useContext(RomContext);
+    const romContext = useRomContext();
+    const divRef = useRef<HTMLDivElement>(null);
+    const browserRef = useRef<Browser>(null);
     const [muted, setMuted] = useState(true);
+
+    useEffect(() => {
+        // <Emulator romData={romContext.slots[romContext.selected]?.data} controller={controller}
+        //      paused={false} muted={muted} romContext={romContext}/>}
+        if (divRef.current) {
+            browserRef.current = new Browser({
+                container: divRef.current as HTMLElement,
+                romData: romContext.slots[romContext.selected!]?.data,
+            });
+            return () => browserRef.current?.destroy();
+        }
+    }, [divRef, romContext.selected]);
     return (
         <Main>
             <GamepadArea>
@@ -41,9 +55,7 @@ export default function Game() {
                 <LeftGamePad touchController={controller}/>
             </GamepadArea>
             <EmulatorArea>
-                {romContext.selected !== undefined &&
-                <Emulator romData={romContext.slots[romContext.selected].romData} controller={controller}
-                          paused={false} muted={muted} romContext={romContext}/>}
+                {romContext.selected !== null && <div ref={divRef}/>}
             </EmulatorArea>
             <GamepadArea>
                 <UpperRight onClick={romContext.unselectSlot} className="nes-icon close is-dark is-small"/>

@@ -1,9 +1,7 @@
-import {useContext} from "react";
-import {RomContext} from "../context/RomContext";
+import {useRomContext} from "../context/RomContext";
 import styled from "styled-components";
 import Button from "./Button";
 import FileInput from "./FileInput";
-import PropTypes from "prop-types";
 
 const SelectRomButton = styled(Button)`
     width: 90%;
@@ -22,9 +20,9 @@ const DeleteButton = styled.span`
     z-index: 1000;
 `
 
-export default function RomButton(props) {
+export default function RomButton(props: { index: number }) {
     const {index} = props;
-    const romContext = useContext(RomContext);
+    const romContext = useRomContext();
 
     function handleDeleteClick(event) {
         if (index > 0) {
@@ -33,7 +31,7 @@ export default function RomButton(props) {
         }
     }
 
-    function renderDeleteButton(index) {
+    function renderDeleteButton(index: number) {
         let deleteButton;
         const classNames = 'nes-icon close is-small';
         if (index === 0 || romContext.slots[index] === undefined) {
@@ -44,7 +42,7 @@ export default function RomButton(props) {
         return (<DeleteButton onClick={(e) => handleDeleteClick(e)}>{deleteButton}</DeleteButton>);
     }
 
-    function renderRomTitle(index, title) {
+    function renderRomTitle(index: number, title: string) {
         return (
             <ButtonTitle>
                 <span>{`${index + 1}.`}</span><span>{title}</span>{renderDeleteButton(index)}
@@ -52,7 +50,7 @@ export default function RomButton(props) {
         );
     }
 
-    async function handleClick(index) {
+    async function handleClick(index: number) {
         if (romContext.selected === index) {
             romContext.unselectSlot();
         } else {
@@ -60,7 +58,7 @@ export default function RomButton(props) {
         }
     }
 
-    function renderRomButton(index) {
+    function renderRomButton(index: number) {
         const rom = romContext.slots[index];
         if (rom) {
             return (
@@ -77,8 +75,4 @@ export default function RomButton(props) {
     }
 
     return renderRomButton(index);
-}
-
-RomButton.propTypes = {
-    index: PropTypes.number.isRequired
 }

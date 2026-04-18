@@ -1,16 +1,26 @@
 import {NoUserSelectLabel} from "../Styles";
-import PropTypes from "prop-types";
-import {useEffect, useState} from "react";
+import {ChangeEvent, ReactNode, useEffect, useState} from "react";
 
-export default function FileInput(props) {
+interface FileInputProps {
+    title: ReactNode;
+    onDown: (title: string) => void;
+    onUp: (title: string) => void;
+    className: string;
+    onClick: () => void;
+    handleContent: (fileName: string, content: string) => void;
+}
+
+export default function FileInput(props: FileInputProps) {
     const {title, onDown, onUp, className, onClick, handleContent} = props;
     const classNames = `nes-btn ${className}`;
-    const [file, setFile] = useState(undefined);
+    const [file, setFile] = useState<File | undefined>(undefined);
 
     useEffect(() => {
-        function handleFile(event) {
-            const content = event.target.result;
-            handleContent(file.name, content);
+        function handleFile(event: ProgressEvent<FileReader>) {
+            const content = event.target?.result;
+            if (file && content) {
+                handleContent(file.name, content.toString());
+            }
         }
 
         if (file) {
@@ -20,10 +30,13 @@ export default function FileInput(props) {
         }
     }, [file, handleContent])
 
-    function handleOnChange(event) {
-        const firstFile = event.target.files[0];
-        if (firstFile) {
-            setFile(firstFile);
+    function handleOnChange(event: ChangeEvent<HTMLInputElement>) {
+        const files = event.target.files;
+        if (files) {
+            const firstFile = files[0];
+            if (firstFile) {
+                setFile(firstFile);
+            }
         }
     }
 
@@ -42,11 +55,3 @@ export default function FileInput(props) {
     );
 }
 
-FileInput.propTypes = {
-    title: PropTypes.any.isRequired,
-    onDown: PropTypes.func,
-    onUp: PropTypes.func,
-    className: PropTypes.string,
-    onClick: PropTypes.func,
-    handleContent: PropTypes.func
-}

@@ -1,5 +1,5 @@
-import {Portrait, Section} from "./LoadRom";
 import Hyperlink from "../components/Hyperlink";
+import {Portrait, Section} from "./LoadRom.style";
 
 export default function Readme() {
     return (
