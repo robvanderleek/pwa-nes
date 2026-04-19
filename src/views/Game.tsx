@@ -35,9 +35,10 @@ export default function Game() {
         //      paused={false} muted={muted} romContext={romContext}/>}
         if (divRef.current) {
             browserRef.current = new Browser({
-                container: divRef.current as HTMLElement,
-                romData: romContext.slots[romContext.selected!]?.data,
+                container: divRef.current as HTMLElement
+            //     // romData: romContext.slots[romContext.selected!]?.data,
             });
+        //     browserRef.current.start();
             return () => browserRef.current?.destroy();
         }
     }, [divRef, romContext.selected]);

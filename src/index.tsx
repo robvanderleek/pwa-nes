@@ -9,13 +9,11 @@ import {DeviceOrientationContextProvider} from "./context/DeviceOrientationConte
 
 const Index = () => {
     return (
-        <React.StrictMode>
-            <DeviceOrientationContextProvider>
-                <RomContextProvider>
-                    <App/>
-                </RomContextProvider>
-            </DeviceOrientationContextProvider>
-        </React.StrictMode>
+        <DeviceOrientationContextProvider>
+            <RomContextProvider>
+                <App/>
+            </RomContextProvider>
+        </DeviceOrientationContextProvider>
     );
 }
 

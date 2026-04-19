@@ -17,7 +17,7 @@ interface RomContextValue {
 const RomContext = createContext({} as RomContextValue);
 
 export const RomContextProvider = (props: { children?: ReactNode }) => {
-    const [selected, setSelected] = useState<number | null>(null);
+    const [selected, setSelected] = useState<number | null>(0);
     const [slots, setSlots] = useState<Array<Rom | undefined>>([]);
 
     useEffect(() => {

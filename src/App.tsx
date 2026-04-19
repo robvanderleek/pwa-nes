@@ -27,7 +27,6 @@ export default function App() {
     } else {
         // return renderNonTouchDevice();
         if (romContext.selected !== undefined) {
-            console.log("Selected ROM:", romContext.slots);
             return (<Game/>);
         } else {
             return renderNoRomSelected();
