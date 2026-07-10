@@ -8,6 +8,8 @@ import Marquee from "react-fast-marquee";
 import Readme from "./Readme";
 import {useRomContext} from "../context/RomContext";
 import {Portrait, Section} from "./LoadRom.style";
+import {useDeviceOrientation} from "../context/DeviceOrientationContext";
+import Button from "../components/Button";
 
 function blinkingEffect() {
     return keyframes`
@@ -23,42 +25,62 @@ const AnimatedComponent = styled.div`
 
 export default function LoadRom() {
     const romContext = useRomContext();
+    const {isTouchDevice} = useDeviceOrientation();
     const [showReadme, setShowReadme] = useState(false);
-    const readme = <Main onClick={() => setShowReadme(false)}><Readme/></Main>;
-    if (showReadme) {
-        return readme;
-    }
-    const marqueeText = `You are running version ${Version.revision}. Click on this scrolling text for more information. `;
-    return (
-        <Portrait>
-            <Section>
-                <LargeMessage>Welcome to</LargeMessage>
-                <LargeMessage>PWA NES</LargeMessage>
-            </Section>
-            <Section>
-                <Message>
-                    <Hyperlink href="https://github.com/robvanderleek/pwa-nes">
-                        If you like this app please click here to <i className="nes-icon is-small star"/> it on GitHub
-                        :)
-                    </Hyperlink>
-                </Message>
-            </Section>
-            <Section>
-                <LargeMessage>Select slot</LargeMessage>
-                <RomButton index={0}/>
-                <RomButton index={1}/>
-                <RomButton index={2}/>
-            </Section>
-            <Section>
+
+    const renderPlayOption = () => {
+        if (isTouchDevice) {
+            return (
                 <AnimatedComponent>
-                    <HideableLargeMessage hide={romContext.selected === undefined}>Rotate device to play!</HideableLargeMessage>
+                    <HideableLargeMessage hide={romContext.selected === undefined}>Rotate device to
+                        play!</HideableLargeMessage>
                 </AnimatedComponent>
-            </Section>
-            <Section>
+            );
+        } else {
+            return (
+                <Button title="Play" onClick={() => setShowGame(true)}/>
+            )
+        }
+    }
+
+    const renderMarquee = () => {
+        const marqueeText = `You are running version ${Version.revision}. Click on this scrolling text for more information. `;
+        return (<Marquee pauseOnClick={true} gradient={false} speed={60}>{marqueeText}</Marquee>);
+    }
+
+    if (showReadme) {
+        return (<Main onClick={() => setShowReadme(false)}><Readme/></Main>);
+    } else {
+        return (
+            <Portrait>
+                <Section>
+                    <LargeMessage>Welcome to</LargeMessage>
+                    <LargeMessage>PWA NES</LargeMessage>
+                </Section>
+                <Section>
+                    <Message>
+                        <Hyperlink href="https://github.com/robvanderleek/pwa-nes">
+                            If you like this app please click here to <i className="nes-icon is-small star"/> it on
+                            GitHub
+                            :)
+                        </Hyperlink>
+                    </Message>
+                </Section>
+                <Section>
+                    <LargeMessage>Select slot</LargeMessage>
+                    <RomButton index={0}/>
+                    <RomButton index={1}/>
+                    <RomButton index={2}/>
+                </Section>
+                <Section>
+                    {renderPlayOption()}
+                </Section>
+                <Section>
                 <span onClick={() => setShowReadme(true)} style={{width: '90%'}}>
-                    <Marquee pauseOnClick={true} gradient={false} speed={60}>{marqueeText}</Marquee>
+                    <Marquee pauseOnClick={true} gradient={false} speed={60}>{renderMarquee()}</Marquee>
                 </span>
-            </Section>
-        </Portrait>
-    );
+                </Section>
+            </Portrait>
+        );
+    }
 }

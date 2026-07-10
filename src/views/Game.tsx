@@ -34,11 +34,23 @@ export default function Game() {
         // <Emulator romData={romContext.slots[romContext.selected]?.data} controller={controller}
         //      paused={false} muted={muted} romContext={romContext}/>}
         if (divRef.current) {
-            browserRef.current = new Browser({
-                container: divRef.current as HTMLElement
-            //     // romData: romContext.slots[romContext.selected!]?.data,
+            const browser = new Browser({
+                container: divRef.current as HTMLElement,
+                romData: romContext.slots[romContext.selected!]?.data,
             });
-        //     browserRef.current.start();
+            browserRef.current = browser;
+            // Browser.loadROMFromURL("https://raw.githubusercontent.com/robvanderleek/pwa-nes/refs/heads/issue-15-Migrate_to_TypeScript/src/static/streemerz-v02.nes", function (err, data) {
+            //     if (err) {
+            //         console.error(err);
+            //         return;
+            //     }
+            //     if (data) {
+            //         browser.loadROM(data);
+            //     }
+            // });
+            // browser.
+            //     browserRef.current.start();
+            browser.fitInParent();
             return () => browserRef.current?.destroy();
         }
     }, [divRef, romContext.selected]);
@@ -56,7 +68,7 @@ export default function Game() {
                 <LeftGamePad touchController={controller}/>
             </GamepadArea>
             <EmulatorArea>
-                {romContext.selected !== null && <div ref={divRef}/>}
+                {romContext.selected !== null && <div style={{flexGrow: 1, width: '100%'}} ref={divRef}/>}
             </EmulatorArea>
             <GamepadArea>
                 <UpperRight onClick={romContext.unselectSlot} className="nes-icon close is-dark is-small"/>

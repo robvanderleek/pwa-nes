@@ -28,9 +28,9 @@
   },
   "scripts": {
     "git-info": "node src/generate-version.js > src/version.js",
-    "start": "yarn git-info && vite",
-    "build": "yarn git-info && vite build",
-    "test": "yarn git-info && vitest"
+    "start": "npm run git-info && vite",
+    "build": "npm run git-info && vite build",
+    "test": "npm run git-info && vitest"
   },
   "browserslist": {
     "production": [

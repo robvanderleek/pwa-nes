@@ -26,6 +26,7 @@ export const GamepadArea = styled(Area)`
 
 export const EmulatorArea = styled(Area)`
     width: 50%;
+    display: flex;
 `;
 
 export const NoUserSelectButton = styled.button`

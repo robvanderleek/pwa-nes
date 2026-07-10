@@ -3,11 +3,11 @@ import {ChangeEvent, ReactNode, useEffect, useState} from "react";
 
 interface FileInputProps {
     title: ReactNode;
-    onDown: (title: string) => void;
-    onUp: (title: string) => void;
+    onDown: (title: ReactNode) => void;
+    onUp: (title: ReactNode) => void;
     className: string;
     onClick: () => void;
-    handleContent: (fileName: string, content: string) => void;
+    handleContent: (fileName: string, content: ArrayBuffer) => void;
 }
 
 export default function FileInput(props: FileInputProps) {
@@ -17,9 +17,9 @@ export default function FileInput(props: FileInputProps) {
 
     useEffect(() => {
         function handleFile(event: ProgressEvent<FileReader>) {
-            const content = event.target?.result;
+            const content = event.target?.result as ArrayBuffer;
             if (file && content) {
-                handleContent(file.name, content.toString());
+                handleContent(file.name, content);
             }
         }
 
@@ -49,7 +49,7 @@ export default function FileInput(props: FileInputProps) {
                            onTouchEnd={() => onUp && onUp(title)}
         >
             <span>{title}</span>
-            <input type="file" accept="application/zip"
+            <input type="file" accept="application/zip,.nes"
                    onChange={handleOnChange}/>
         </NoUserSelectLabel>
     );

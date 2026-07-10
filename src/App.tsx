@@ -8,10 +8,6 @@ export default function App() {
     const romContext = useRomContext();
     const {initializing, isTouchDevice, orientation} = useDeviceOrientation();
 
-    const renderNonTouchDevice = () => <Main><LargeMessage>Please view this on a mobile device</LargeMessage></Main>;
-
-    const renderNoRomSelected = () => <Main><LargeMessage>Rotate to select a ROM to play</LargeMessage></Main>;
-
     if (initializing) {
         return null;
     } else if (isTouchDevice) {
@@ -21,15 +17,15 @@ export default function App() {
             if (romContext.selected !== undefined) {
                 return (<Game/>);
             } else {
-                return renderNoRomSelected();
+                return (<Main><LargeMessage>Rotate to select a ROM to play</LargeMessage></Main>);
             }
         }
     } else {
-        // return renderNonTouchDevice();
-        if (romContext.selected !== undefined) {
-            return (<Game/>);
+
+        if (romContext.selected === null) {
+            return (<LoadRom/>);
         } else {
-            return renderNoRomSelected();
+            return (<Game/>);
         }
     }
 }
