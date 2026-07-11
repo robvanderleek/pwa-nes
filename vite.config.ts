@@ -10,6 +10,7 @@ export default defineConfig({
     },
     assetsInclude: ['**/*.zip'],
     server: {
+        port: 3000,
         open: true,
     },
     test: {

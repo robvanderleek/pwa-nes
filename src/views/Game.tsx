@@ -27,8 +27,8 @@ const UpperRight = styled.i`
 export default function Game() {
     const romContext = useRomContext();
     const divRef = useRef<HTMLDivElement>(null);
-    const browserRef = useRef<Browser>(null);
-    const [muted, setMuted] = useState(true);
+    const browserRef = useRef<Browser | null>(null);
+    const [muted, setMuted] = useState<boolean>(true);
 
     useEffect(() => {
         // <Emulator romData={romContext.slots[romContext.selected]?.data} controller={controller}
@@ -39,6 +39,8 @@ export default function Game() {
                 romData: romContext.slots[romContext.selected!]?.data,
             });
             browserRef.current = browser;
+            // @ts-ignore
+            browser.nes.papu.setMasterVolume(0);
             // Browser.loadROMFromURL("https://raw.githubusercontent.com/robvanderleek/pwa-nes/refs/heads/issue-15-Migrate_to_TypeScript/src/static/streemerz-v02.nes", function (err, data) {
             //     if (err) {
             //         console.error(err);
@@ -54,14 +56,30 @@ export default function Game() {
             return () => browserRef.current?.destroy();
         }
     }, [divRef, romContext.selected]);
+
+    const setMasterVolume = (volume: number) => {
+        // @ts-ignore
+        browserRef.current?.nes.papu.setMasterVolume(volume);
+    }
+
+    const toggleMute = () => {
+        if (muted) {
+            setMasterVolume(255);
+            setMuted(false);
+        } else {
+            setMasterVolume(0);
+            setMuted(true);
+        }
+    }
+
     return (
         <Main>
             <GamepadArea>
                 <UpperLeft>
-                    <label>
-                        <input type="checkbox" className="nes-checkbox is-dark" checked={!muted}
-                               onChange={() => setMuted(!muted)}/>
-                        <span>Sound</span>
+                    <label className="nes-pointer">
+                        <input type="checkbox" className="nes-checkbox is-dark" checked={muted}
+                               onChange={toggleMute}/>
+                        <span>Mute</span>
                     </label>
                 </UpperLeft>
                 <Button onDown={controller.handleButtonDown} onUp={controller.handleButtonUp} title="Select"/>
@@ -71,7 +89,7 @@ export default function Game() {
                 {romContext.selected !== null && <div style={{flexGrow: 1, width: '100%'}} ref={divRef}/>}
             </EmulatorArea>
             <GamepadArea>
-                <UpperRight onClick={romContext.unselectSlot} className="nes-icon close is-dark is-small"/>
+                <UpperRight onClick={romContext.unselectSlot} className="nes-icon close nes-pointer is-dark"/>
                 <Button onDown={controller.handleButtonDown} onUp={controller.handleButtonUp} title="Start"/>
                 <RightGamePad touchController={controller}/>
             </GamepadArea>
