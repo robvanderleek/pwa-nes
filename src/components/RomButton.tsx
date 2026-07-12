@@ -1,30 +1,14 @@
 import {useRomContext} from "../context/RomContext";
-import styled from "styled-components";
-import Button from "./Button";
+import {ButtonTitle, DeleteButton, SlotLabel} from "./RomButton.style";
+import React from "react";
 import FileInput from "./FileInput";
 
-const SelectRomButton = styled(Button)`
-    width: 90%;
-`;
-
-const LoadRomButton = styled(FileInput)`
-    width: 90%;
-`;
-
-const ButtonTitle = styled.div`
-    display: flex;
-    justify-content: space-between;
-`;
-
-const DeleteButton = styled.span`
-    z-index: 1000;
-`
 
 export default function RomButton(props: { index: number }) {
     const {index} = props;
     const romContext = useRomContext();
 
-    function handleDeleteClick(event) {
+    function handleDeleteClick(event: React.MouseEvent) {
         if (index > 0) {
             romContext.removeRom(index);
             event.stopPropagation();
@@ -61,15 +45,19 @@ export default function RomButton(props: { index: number }) {
     function renderRomButton(index: number) {
         const rom = romContext.slots[index];
         if (rom) {
+            const classNames = [];
+            classNames.push('nes-btn');
+            if (romContext.selected === index) {
+                classNames.push('is-success');
+            }
             return (
-                <SelectRomButton title={renderRomTitle(index, rom.name)}
-                                 onClick={async () => handleClick(index)}
-                                 active={romContext.selected === index}/>
+                <SlotLabel className={classNames.join(' ')} onClick={async () => handleClick(index)}>{renderRomTitle(
+                    index, rom.name)}</SlotLabel>
             );
         } else {
             return (
-                <LoadRomButton title={renderRomTitle(index, `<Load ROM.zip>`)}
-                               handleContent={(romName, data) => romContext.addRom(index, romName, data)}/>
+                <FileInput title={renderRomTitle(index, '<Load ROM>')}
+                           handleContent={(romName, data) => romContext.addRom(index, romName, data)}/>
             );
         }
     }

@@ -16,11 +16,11 @@ export default class TouchController {
     onButtonUpCallback: ((controller: ControllerId, button: ButtonKey) => void) | undefined;
     onButtonDownCallback: ((controller: ControllerId, button: ButtonKey) => void) | undefined;
 
-    setOnButtonDown = (func: (controller: ControllerId, button: ButtonKey) => void) => {
+    setOnButtonDown = (func: ((controller: ControllerId, button: ButtonKey) => void) | undefined) => {
         this.onButtonDownCallback = func;
     }
 
-    setOnButtonUp = (func: (controller: ControllerId, button: ButtonKey) => void) => {
+    setOnButtonUp = (func: ((controller: ControllerId, button: ButtonKey) => void) | undefined) => {
         this.onButtonUpCallback = func;
     }
 

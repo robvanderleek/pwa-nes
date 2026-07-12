@@ -1,18 +1,13 @@
-import {NoUserSelectLabel} from "../Styles";
 import {ChangeEvent, ReactNode, useEffect, useState} from "react";
+import {SlotLabel} from "./RomButton.style";
 
 interface FileInputProps {
     title: ReactNode;
-    onDown: (title: ReactNode) => void;
-    onUp: (title: ReactNode) => void;
-    className: string;
-    onClick: () => void;
     handleContent: (fileName: string, content: ArrayBuffer) => void;
 }
 
 export default function FileInput(props: FileInputProps) {
-    const {title, onDown, onUp, className, onClick, handleContent} = props;
-    const classNames = `nes-btn ${className}`;
+    const {title, handleContent} = props;
     const [file, setFile] = useState<File | undefined>(undefined);
 
     useEffect(() => {
@@ -41,17 +36,11 @@ export default function FileInput(props: FileInputProps) {
     }
 
     return (
-        <NoUserSelectLabel className={classNames}
-                           onClick={onClick}
-                           onMouseDown={() => onDown && onDown(title)}
-                           onMouseUp={() => onUp && onUp(title)}
-                           onTouchStart={() => onDown && onDown(title)}
-                           onTouchEnd={() => onUp && onUp(title)}
-        >
+        <SlotLabel className="nes-btn">
             <span>{title}</span>
             <input type="file" accept="application/zip,.nes"
                    onChange={handleOnChange}/>
-        </NoUserSelectLabel>
+        </SlotLabel>
     );
 }
 

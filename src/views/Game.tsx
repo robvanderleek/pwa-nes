@@ -1,4 +1,4 @@
-import {EmulatorArea, GamepadArea, Main} from "../Styles";
+import {EmulatorArea, GameArea, GamepadArea, Main} from "../Styles";
 import Button from "../components/Button";
 import LeftGamePad from "../LeftGamePad";
 import RightGamePad from "../RightGamePad";
@@ -39,8 +39,11 @@ export default function Game() {
                 romData: romContext.slots[romContext.selected!]?.data,
             });
             browserRef.current = browser;
+            controller.setOnButtonDown(browser.nes.buttonDown);
+            controller.setOnButtonUp(browser.nes.buttonUp);
             // @ts-ignore
             browser.nes.papu.setMasterVolume(0);
+            browser.keyboard
             // Browser.loadROMFromURL("https://raw.githubusercontent.com/robvanderleek/pwa-nes/refs/heads/issue-15-Migrate_to_TypeScript/src/static/streemerz-v02.nes", function (err, data) {
             //     if (err) {
             //         console.error(err);
@@ -53,9 +56,20 @@ export default function Game() {
             // browser.
             //     browserRef.current.start();
             browser.fitInParent();
-            return () => browserRef.current?.destroy();
+            window.addEventListener('resize', fitEmulatorInParent);
+            return () => {
+                window.removeEventListener('resize', fitEmulatorInParent);
+                controller.setOnButtonDown(undefined);
+                controller.setOnButtonUp(undefined);
+
+                browserRef.current?.destroy();
+            }
         }
     }, [divRef, romContext.selected]);
+
+    const fitEmulatorInParent = () => {
+        browserRef.current?.fitInParent();
+    }
 
     const setMasterVolume = (volume: number) => {
         // @ts-ignore
@@ -85,9 +99,9 @@ export default function Game() {
                 <Button onDown={controller.handleButtonDown} onUp={controller.handleButtonUp} title="Select"/>
                 <LeftGamePad touchController={controller}/>
             </GamepadArea>
-            <EmulatorArea>
-                {romContext.selected !== null && <div style={{flexGrow: 1, width: '100%'}} ref={divRef}/>}
-            </EmulatorArea>
+            <GameArea>
+                {romContext.selected !== null && <EmulatorArea ref={divRef}/>}
+            </GameArea>
             <GamepadArea>
                 <UpperRight onClick={romContext.unselectSlot} className="nes-icon close nes-pointer is-dark"/>
                 <Button onDown={controller.handleButtonDown} onUp={controller.handleButtonUp} title="Start"/>
