@@ -1,29 +1,29 @@
 import './LeftGamePad.css';
-import TouchController from "./TouchController";
+import TouchController, {ControllerButton} from "./TouchController";
 
-export default function LeftGamePad(props: {touchController:TouchController}) {
+export default function LeftGamePad(props: { touchController: TouchController }) {
     const {touchController} = props;
 
-    function renderLfArrow(name: string) {
+    function renderLfArrow(button: ControllerButton) {
         return (
             <div style={{position: 'absolute', right: 0, width: '32px', height: '100%'}}
-                 onMouseDown={() => touchController.handleButtonDown(name)}
-                 onMouseUp={() => touchController.handleButtonUp(name)}
-                 onTouchStart={() => touchController.handleButtonDown(name)}
-                 onTouchEnd={() => touchController.handleButtonUp(name)}
+                 onMouseDown={() => touchController.handleButtonDown(button)}
+                 onMouseUp={() => touchController.handleButtonUp(button)}
+                 onTouchStart={() => touchController.handleButtonDown(button)}
+                 onTouchEnd={() => touchController.handleButtonUp(button)}
             >
                 <div className="arrowlf"/>
             </div>
         );
     }
 
-    function renderRhArrow(name: string) {
+    function renderRhArrow(button: ControllerButton) {
         return (
             <div style={{position: 'absolute', left: 0, width: '32px', height: '100%'}}
-                 onMouseDown={() => touchController.handleButtonDown(name)}
-                 onMouseUp={() => touchController.handleButtonUp(name)}
-                 onTouchStart={() => touchController.handleButtonDown(name)}
-                 onTouchEnd={() => touchController.handleButtonUp(name)}
+                 onMouseDown={() => touchController.handleButtonDown(button)}
+                 onMouseUp={() => touchController.handleButtonUp(button)}
+                 onTouchStart={() => touchController.handleButtonDown(button)}
+                 onTouchEnd={() => touchController.handleButtonUp(button)}
             >
                 <div className="arrowrh"/>
             </div>
@@ -35,12 +35,12 @@ export default function LeftGamePad(props: {touchController:TouchController}) {
             <div className="cross">
                 <div className="circle"></div>
                 <div className="horizontal">
-                    {renderLfArrow('Right')}
-                    {renderRhArrow('Left')}
+                    {renderLfArrow('right')}
+                    {renderRhArrow('left')}
                 </div>
                 <div className="vertical">
-                    {renderLfArrow('Down')}
-                    {renderRhArrow('Up')}
+                    {renderLfArrow('down')}
+                    {renderRhArrow('up')}
                 </div>
                 <div className="back-cross">
                     <div className="horiz"></div>

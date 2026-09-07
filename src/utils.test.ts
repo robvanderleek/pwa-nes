@@ -1,4 +1,4 @@
-import {countUppercase, isUpperCase, prettifyRomName} from "./utils";
+import {countUppercase, prettifyRomName} from "./utils";
 
 test('prettify rom name', () => {
     expect(prettifyRomName('Streemerz')).toBe('Streemerz');

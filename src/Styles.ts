@@ -29,10 +29,9 @@ export const GameArea = styled(Area)`
     display: flex;
 `;
 
-export const EmulatorArea = styled.div`
+export const EmulatorCanvas = styled.canvas`
     flex-grow: 1;
     width: 100%;
-    border: solid red 1px;
 `;
 
 export const NoUserSelectButton = styled.button`

@@ -1,5 +1,5 @@
 import React, {createContext, ReactNode, useContext, useEffect, useState} from "react";
-import streemerz from "../static/streemerz-v02.zip";
+import streemerzUrl from "../static/streemerz-v02.zip?url";
 import {unzip} from "unzipit";
 import {prettifyRomName} from "../utils";
 import Version from "../version";
@@ -7,7 +7,7 @@ import Version from "../version";
 interface RomContextValue {
     selected: number | null;
     slots: (Rom | undefined)[];
-    addRom: (index: number, name: string, data: string) => Promise<void>;
+    addRom: (index: number, name: string, data: ArrayBuffer) => Promise<void>;
     removeRom: (index: number) => void;
     selectSlot: (index: number) => void;
     unselectSlot: () => void;
@@ -22,37 +22,25 @@ export const RomContextProvider = (props: { children?: ReactNode }) => {
 
     useEffect(() => {
         const init = async () => {
-            const loadedSlots = [loadSlot(0), loadSlot(1), loadSlot(2)];
-            if (slots[0] === undefined || slots[0].name !== 'Streemerz' || !isUpToDate()) {
-                const romData = await loadZippedRomData(streemerz);
-                saveSlot(0, 'Streemerz', romData);
+            let slot0 = loadRomFromLocalStorage(0);
+            if (slot0 === undefined || slot0.name !== 'Streemerz' || !isUpToDate()) {
+                const res = await fetch(streemerzUrl);
+                const buffer: ArrayBuffer = await res.arrayBuffer();
+                const romData = await loadZippedRomData(buffer);
+                const rom: Rom = {name: prettifyRomName('Streemerz'), data: romData};
+                saveRomToLocalStorage(0, rom);
             }
+            setSlots([slot0, loadRomFromLocalStorage(1), loadRomFromLocalStorage(2)]);
         }
         init();
-    });
+    }, []);
 
-    const loadZippedRomData = async (data: string): Promise<string> => {
+    const loadZippedRomData = async (data: ArrayBuffer): Promise<ArrayBuffer> => {
         const unzipped = await unzip(data);
         const firstEntry = Object.keys(unzipped.entries)[0];
-        return arrayBufferToString(await unzipped.entries[firstEntry].arrayBuffer());
+        return await unzipped.entries[firstEntry].arrayBuffer();
     }
 
-    const arrayBufferToString = (arrayBuffer: ArrayBuffer): string => {
-        const array = new Int8Array(arrayBuffer);
-        let result = "";
-        for (let i = 0; i < array.length; i++) {
-            result += String.fromCharCode(array[i]);
-        }
-        return result
-    }
-
-    const getVersion = () => {
-        return localStorage.getItem('PWA_NES_VERSION');
-    }
-
-    const setVersion = () => {
-        return localStorage.setItem('PWA_NES_VERSION', Version.revision);
-    }
 
     const isUpToDate = () => {
         const storedVersion = getVersion();
@@ -65,25 +53,6 @@ export const RomContextProvider = (props: { children?: ReactNode }) => {
         return true;
     }
 
-    const loadSlot = (index: number): string | undefined => {
-        const item = localStorage.getItem(`SLOT_${index}`);
-        if (item) {
-            return JSON.parse(item);
-        } else {
-            return undefined;
-        }
-    }
-
-    const saveSlot = (index: number, name: string, data: string) => {
-        const rom: Rom = {name: prettifyRomName(name), data: data};
-        saveRomToLocalStorage(index, rom);
-        const updatedSlots = structuredClone(slots);
-        updatedSlots[index] = rom;
-        setSlots(updatedSlots);
-    }
-
-    const saveRomToLocalStorage = (index: number, rom: Rom) => localStorage.setItem(`SLOT_${index}`,
-        JSON.stringify(rom));
 
     const updateSlot = (index: number, json: any) => {
         const updatedSlots = structuredClone(slots);
@@ -99,13 +68,20 @@ export const RomContextProvider = (props: { children?: ReactNode }) => {
 
     const unselectSlot = () => setSelected(null);
 
-    const addRom = async (index: number, name: string, data: string) => {
+    const addRom = async (index: number, name: string, data: ArrayBuffer) => {
         if (name.toLowerCase().endsWith(".zip")) {
             const romData = await loadZippedRomData(data);
-            saveSlot(index, name, romData);
+            const rom: Rom = {name: prettifyRomName(name), data: romData};
+            saveRomToLocalStorage(index, rom);
+            const updatedSlots = structuredClone(slots);
+            updatedSlots[index] = rom;
+            setSlots(updatedSlots);
         } else {
-            // const romData = arrayBufferToString(data);
-            saveSlot(index, name, data);
+            const rom: Rom = {name: prettifyRomName(name), data: data};
+            saveRomToLocalStorage(index, rom);
+            const updatedSlots = structuredClone(slots);
+            updatedSlots[index] = rom;
+            setSlots(updatedSlots);
         }
         setSelected(index);
     }
@@ -137,3 +113,47 @@ export const RomContextProvider = (props: { children?: ReactNode }) => {
 }
 
 export const useRomContext = () => useContext(RomContext);
+
+const base64ToArrayBuffer = (base64: string): ArrayBuffer => {
+    const binary = atob(base64);
+    const array = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+        array[i] = binary.charCodeAt(i);
+    }
+    return array.buffer;
+}
+
+export function loadRomFromLocalStorage(index: number): Rom | undefined {
+    const item = localStorage.getItem(`SLOT_${index}`);
+    if (item) {
+        const json = JSON.parse(item);
+        return {...json, data: base64ToArrayBuffer(json.data)};
+    } else {
+        return undefined;
+    }
+}
+
+const arrayBufferToBase64 = (arrayBuffer: ArrayBuffer): string => {
+    const array = new Uint8Array(arrayBuffer);
+    let result = "";
+    for (let i = 0; i < array.length; i++) {
+        result += String.fromCharCode(array[i]);
+    }
+    return btoa(result);
+}
+
+export function saveRomToLocalStorage(index: number, rom: Rom) {
+    localStorage.setItem(`SLOT_${index}`, JSON.stringify({...rom, data: arrayBufferToBase64(rom.data)}));
+}
+
+export function deleteRomFromLocalStorage(index: number) {
+    localStorage.removeItem(`SLOT_${index}`);
+}
+
+export function getVersion() {
+    return localStorage.getItem('PWA_NES_VERSION');
+}
+
+export function setVersion() {
+    return localStorage.setItem('PWA_NES_VERSION', Version.revision);
+}

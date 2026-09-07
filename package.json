@@ -5,8 +5,8 @@
   "dependencies": {
     "anylogger": "^1.0.11",
     "fast-text-encoding": "^1.0.3",
-    "jsnes": "^2.1.0",
     "nes.css": "^2.3.0",
+    "nostalgist": "^0.21.1",
     "prop-types": "^15.7.2",
     "raven-js": "^3.27.2",
     "react": "^19.2.4",
@@ -23,6 +23,7 @@
     "@types/react-dom": "^19.2.3",
     "@types/styled-components": "^5.1.36",
     "@vitejs/plugin-react": "^6.0.1",
+    "jsdom": "^30.0.1",
     "vite": "^8.0.2",
     "vitest": "^4.0.18"
   },
@@ -30,7 +31,7 @@
     "git-info": "node src/generate-version.js > src/version.js",
     "start": "npm run git-info && vite",
     "build": "npm run git-info && vite build",
-    "test": "npm run git-info && vitest"
+    "test": "npm run git-info && vitest run"
   },
   "browserslist": {
     "production": [

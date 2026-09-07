@@ -1,6 +1,6 @@
 interface Rom {
     name: string;
-    data: string;
+    data: ArrayBuffer;
     cpu?: object;
     ppu?: object;
     mmap?: object;

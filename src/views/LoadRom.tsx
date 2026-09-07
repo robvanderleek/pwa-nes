@@ -37,9 +37,7 @@ export default function LoadRom() {
                 </AnimatedComponent>
             );
         } else {
-            return (
-                <Button title="Play" onClick={() => setShowGame(true)}/>
-            )
+            return null;
         }
     }
 

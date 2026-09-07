@@ -1,5 +1,5 @@
 import './RightGamePad.css';
-import TouchController from "./TouchController";
+import TouchController, {ControllerButton} from "./TouchController";
 
 interface RightGamePasProps {
     touchController: TouchController;
@@ -8,25 +8,25 @@ interface RightGamePasProps {
 export default function RightGamePad(props: RightGamePasProps) {
     const {touchController} = props;
 
-    function renderButton(name: string) {
+    function renderButton(button: ControllerButton) {
         return (
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end', transform: 'scale(1.5)'}}>
                 <div className="btn-border"
-                     onMouseDown={() => touchController.handleButtonDown(name)}
-                     onMouseUp={() => touchController.handleButtonUp(name)}
-                     onTouchStart={() => touchController.handleButtonDown(name)}
-                     onTouchEnd={() => touchController.handleButtonUp(name)}>
+                     onMouseDown={() => touchController.handleButtonDown(button)}
+                     onMouseUp={() => touchController.handleButtonUp(button)}
+                     onTouchStart={() => touchController.handleButtonDown(button)}
+                     onTouchEnd={() => touchController.handleButtonUp(button)}>
                     <div className="btn-round"/>
                 </div>
-                <div className="sticker">{name}</div>
+                <div className="sticker">{button}</div>
             </div>
         );
     }
 
     return (
         <div style={{display: 'flex', gap: '48px'}}>
-            {renderButton('B')}
-            {renderButton('A')}
+            {renderButton('b')}
+            {renderButton('a')}
         </div>
     );
 }

@@ -1,24 +1,22 @@
-import {RomContextProvider} from "./RomContext";
-import {shallow} from "enzyme";
+import {deleteRomFromLocalStorage, getVersion, saveRomToLocalStorage, setVersion} from "./RomContext";
 
 class LocalStorageMock {
-    constructor() {
-        this.store = {};
+    constructor(private store: Record<string, string> = {}) {
     }
 
     clear() {
         this.store = {};
     }
 
-    getItem(key) {
+    getItem(key: string): string | null {
         return this.store[key] || null;
     }
 
-    setItem(key, value) {
+    setItem(key: string, value: any) {
         this.store[key] = value.toString();
     }
 
-    removeItem(key) {
+    removeItem(key: string) {
         delete this.store[key];
     }
 }
@@ -28,32 +26,31 @@ beforeEach(() => {
 });
 
 test('save a rom to a slot', () => {
-    const provider = shallow(<RomContextProvider/>).instance();
-
     expect(window.localStorage.getItem('SLOT_0')).toBeNull();
 
-    provider.saveSlot(0, 'DonkeyK.nes', '0123456789abcdef');
+    const rom = {name: 'DonkeyK.nes', data: new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]).buffer};
+
+    saveRomToLocalStorage(0, rom);
 
     expect(window.localStorage.getItem('SLOT_0')).toBeDefined();
 });
 
 test('get and set version', () => {
-    const provider = shallow(<RomContextProvider/>).instance();
+    expect(getVersion()).toBeNull();
 
-    expect(provider.getVersion()).toBeNull();
+    setVersion();
 
-    provider.setVersion();
-
-    expect(provider.getVersion()).toBeDefined();
+    expect(getVersion()).toBeDefined();
 });
 
 test('remove rom', () => {
-    const provider = shallow(<RomContextProvider/>).instance();
-    provider.saveSlot(0, 'DonkeyK.nes', '0123456789abcdef');
+    const rom = {name: 'DonkeyK.nes', data: new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]).buffer};
+
+    saveRomToLocalStorage(0, rom);
 
     expect(window.localStorage.getItem('SLOT_0')).toBeDefined();
 
-    provider.removeRom(0);
+    deleteRomFromLocalStorage(0);
 
     expect(window.localStorage.getItem('SLOT_0')).toBeNull();
 });

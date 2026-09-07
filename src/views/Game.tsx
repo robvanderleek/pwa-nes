@@ -1,4 +1,4 @@
-import {EmulatorArea, GameArea, GamepadArea, Main} from "../Styles";
+import {EmulatorCanvas, GameArea, GamepadArea, Main} from "../Styles";
 import Button from "../components/Button";
 import LeftGamePad from "../LeftGamePad";
 import RightGamePad from "../RightGamePad";
@@ -6,7 +6,7 @@ import TouchController from "../TouchController";
 import {useEffect, useRef, useState} from "react";
 import styled from "styled-components";
 import {useRomContext} from "../context/RomContext";
-import {Browser} from "jsnes";
+import {Nostalgist} from "nostalgist";
 
 const controller = new TouchController();
 
@@ -26,63 +26,41 @@ const UpperRight = styled.i`
 
 export default function Game() {
     const romContext = useRomContext();
-    const divRef = useRef<HTMLDivElement>(null);
-    const browserRef = useRef<Browser | null>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const nostalgistRef = useRef<Nostalgist | null>(null);
     const [muted, setMuted] = useState<boolean>(true);
 
     useEffect(() => {
-        // <Emulator romData={romContext.slots[romContext.selected]?.data} controller={controller}
-        //      paused={false} muted={muted} romContext={romContext}/>}
-        if (divRef.current) {
-            const browser = new Browser({
-                container: divRef.current as HTMLElement,
-                romData: romContext.slots[romContext.selected!]?.data,
-            });
-            browserRef.current = browser;
-            controller.setOnButtonDown(browser.nes.buttonDown);
-            controller.setOnButtonUp(browser.nes.buttonUp);
-            // @ts-ignore
-            browser.nes.papu.setMasterVolume(0);
-            browser.keyboard
-            // Browser.loadROMFromURL("https://raw.githubusercontent.com/robvanderleek/pwa-nes/refs/heads/issue-15-Migrate_to_TypeScript/src/static/streemerz-v02.nes", function (err, data) {
-            //     if (err) {
-            //         console.error(err);
-            //         return;
-            //     }
-            //     if (data) {
-            //         browser.loadROM(data);
-            //     }
-            // });
-            // browser.
-            //     browserRef.current.start();
-            browser.fitInParent();
-            window.addEventListener('resize', fitEmulatorInParent);
-            return () => {
-                window.removeEventListener('resize', fitEmulatorInParent);
-                controller.setOnButtonDown(undefined);
-                controller.setOnButtonUp(undefined);
-
-                browserRef.current?.destroy();
+        const initEmulator = async () => {
+            if (canvasRef.current) {
+                const rom = romContext.slots[romContext.selected!];
+                if (rom) {
+                    const fileContent = rom.data;
+                    const nostalgist = await Nostalgist.launch(
+                        {
+                            element: canvasRef.current,
+                            core: 'fceumm',
+                            rom: fileContent,
+                            retroarchConfig: {audio_mute_enable: true}
+                        });
+                    controller.setNostalgist(nostalgist);
+                    nostalgistRef.current = nostalgist;
+                }
             }
         }
-    }, [divRef, romContext.selected]);
+        initEmulator();
+        return () => {
+            if (nostalgistRef.current) {
+                nostalgistRef.current.exit({removeCanvas: false});
+                nostalgistRef.current = null;
+            }
+        }
+    }, [canvasRef, romContext.selected]);
 
-    const fitEmulatorInParent = () => {
-        browserRef.current?.fitInParent();
-    }
-
-    const setMasterVolume = (volume: number) => {
-        // @ts-ignore
-        browserRef.current?.nes.papu.setMasterVolume(volume);
-    }
-
-    const toggleMute = () => {
-        if (muted) {
-            setMasterVolume(255);
-            setMuted(false);
-        } else {
-            setMasterVolume(0);
-            setMuted(true);
+    const toggleMute = async () => {
+        if (nostalgistRef.current) {
+            nostalgistRef.current.sendCommand('MUTE');
+            setMuted(!muted);
         }
     }
 
@@ -96,15 +74,15 @@ export default function Game() {
                         <span>Mute</span>
                     </label>
                 </UpperLeft>
-                <Button onDown={controller.handleButtonDown} onUp={controller.handleButtonUp} title="Select"/>
+                <Button touchController={controller} controllerButton="select"/>
                 <LeftGamePad touchController={controller}/>
             </GamepadArea>
             <GameArea>
-                {romContext.selected !== null && <EmulatorArea ref={divRef}/>}
+                <EmulatorCanvas ref={canvasRef}/>
             </GameArea>
             <GamepadArea>
                 <UpperRight onClick={romContext.unselectSlot} className="nes-icon close nes-pointer is-dark"/>
-                <Button onDown={controller.handleButtonDown} onUp={controller.handleButtonUp} title="Start"/>
+                <Button touchController={controller} controllerButton="start"/>
                 <RightGamePad touchController={controller}/>
             </GamepadArea>
         </Main>

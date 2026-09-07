@@ -1,26 +1,24 @@
 import {NoUserSelectButton} from "../Styles";
-import PropTypes from "prop-types";
+import TouchController, {ControllerButton} from "../TouchController";
 
 interface ButtonProps {
-    title: string;
-    onDown: PropTypes.func,
-    onUp: PropTypes.func,
-    active: PropTypes.bool,
-    className: PropTypes.string,
-    onClick: PropTypes.func
+    touchController: TouchController;
+    controllerButton: ControllerButton;
+    active?: boolean;
+    className?: string;
 }
 
-export default function Button(props) {
-    const {title, onDown, onUp, active, className, onClick} = props;
+export default function Button(props: ButtonProps) {
+    const {touchController, controllerButton, active, className} = props;
     const classNames = active ? `nes-btn is-success ${className}` : `nes-btn ${className}`;
     return (
         <NoUserSelectButton className={classNames}
-                            onClick={onClick}
-                            onMouseDown={() => onDown && onDown(title)}
-                            onMouseUp={() => onUp && onUp(title)}
-                            onTouchStart={() => onDown && onDown(title)}
-                            onTouchEnd={() => onUp && onUp(title)}
-        >{title}</NoUserSelectButton>
+                            onClick={() => touchController.handleButtonClick(controllerButton)}
+                            onMouseDown={() => touchController.handleButtonDown(controllerButton)}
+                            onMouseUp={() => touchController.handleButtonUp(controllerButton)}
+                            onTouchStart={() => touchController.handleButtonDown(controllerButton)}
+                            onTouchEnd={() => touchController.handleButtonUp(controllerButton)}
+        >{controllerButton}</NoUserSelectButton>
     );
 }
 
