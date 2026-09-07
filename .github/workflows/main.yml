@@ -1,0 +1,29 @@
+name: main
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v7
+
+    - name: Setup Node
+      uses: actions/setup-node@v7
+      with:
+        node-version: '24.x'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run unit-tests
+      run: npm test
