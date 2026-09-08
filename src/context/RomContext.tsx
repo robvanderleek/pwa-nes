@@ -44,7 +44,7 @@ export const RomContextProvider = (props: { children?: ReactNode }) => {
 
     const isUpToDate = () => {
         const storedVersion = getVersion();
-        const version = Version.revision;
+        const version = Version.gitSha.substring(0, 7);
         if (storedVersion === null || storedVersion !== version) {
             console.log('New version loaded');
             setVersion();
@@ -155,5 +155,5 @@ export function getVersion() {
 }
 
 export function setVersion() {
-    return localStorage.setItem('PWA_NES_VERSION', Version.revision);
+    return localStorage.setItem('PWA_NES_VERSION', Version.gitSha.substring(0, 7));
 }

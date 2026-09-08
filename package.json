@@ -1,6 +1,7 @@
 {
   "name": "PWA-NES",
   "version": "0.9.0",
+  "type": "module",
   "private": true,
   "dependencies": {
     "anylogger": "^1.0.11",
@@ -24,14 +25,15 @@
     "@types/styled-components": "^5.1.36",
     "@vitejs/plugin-react": "^6.0.1",
     "jsdom": "^30.0.1",
+    "mkver": "^5.0.4",
     "vite": "^8.0.2",
     "vitest": "^4.0.18"
   },
   "scripts": {
-    "git-info": "node src/generate-version.js > src/version.js",
-    "start": "npm run git-info && vite",
-    "build": "npm run git-info && vite build",
-    "test": "npm run git-info && vitest run"
+    "prepare": "mkver ./src/version.ts",
+    "start": "vite",
+    "build": "vite build",
+    "test": "vitest run"
   },
   "browserslist": {
     "production": [

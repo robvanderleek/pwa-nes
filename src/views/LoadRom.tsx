@@ -9,7 +9,6 @@ import Readme from "./Readme";
 import {useRomContext} from "../context/RomContext";
 import {Portrait, Section} from "./LoadRom.style";
 import {useDeviceOrientation} from "../context/DeviceOrientationContext";
-import Button from "../components/Button";
 
 function blinkingEffect() {
     return keyframes`
@@ -42,7 +41,8 @@ export default function LoadRom() {
     }
 
     const renderMarquee = () => {
-        const marqueeText = `You are running version ${Version.revision}. Click on this scrolling text for more information. `;
+        const marqueeText = `You are running version ${Version.gitSha.substring(0,
+            7)}. Click on this scrolling text for more information. `;
         return (<Marquee pauseOnClick={true} gradient={false} speed={60}>{marqueeText}</Marquee>);
     }
 
