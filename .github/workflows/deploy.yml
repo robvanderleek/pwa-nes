@@ -1,0 +1,32 @@
+name: deploy
+
+on:
+  push:
+    branches: 
+      - main    
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v7
+
+    - name: Setup NodeJS
+      uses: actions/setup-node@v6
+      with:
+        node-version: '24.x'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build
+      run: npm run build
+
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./dist
