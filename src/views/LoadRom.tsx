@@ -4,11 +4,11 @@ import RomButton from "../components/RomButton";
 import {useState} from "react";
 import Hyperlink from "../components/Hyperlink";
 import Version from "../version";
-import Marquee from "react-fast-marquee";
 import Readme from "./Readme";
 import {useRomContext} from "../context/RomContext";
 import {Portrait, Section} from "./LoadRom.style";
 import {useDeviceOrientation} from "../context/DeviceOrientationContext";
+import MarqueeModule from "react-fast-marquee";
 
 function blinkingEffect() {
     return keyframes`
@@ -26,6 +26,8 @@ export default function LoadRom() {
     const romContext = useRomContext();
     const {isTouchDevice} = useDeviceOrientation();
     const [showReadme, setShowReadme] = useState(false);
+    // @ts-ignore
+    const Marquee = MarqueeModule.default;
 
     const renderPlayOption = () => {
         if (isTouchDevice) {
