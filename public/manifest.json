@@ -1,7 +1,7 @@
 {
-  "short_name": "PWA NES",
-  "name": "PWA NES",
-  "description": "8-bit NES Emulator",
+  "short_name": "Web-NES",
+  "name": "Web-NES",
+  "description": "8-bit NES emulator web page",
   "keywords": [
     "NES",
     "Emulator",

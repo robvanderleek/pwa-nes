@@ -151,9 +151,9 @@ export function deleteRomFromLocalStorage(index: number) {
 }
 
 export function getVersion() {
-    return localStorage.getItem('PWA_NES_VERSION');
+    return localStorage.getItem('WEB_NES_VERSION');
 }
 
 export function setVersion() {
-    return localStorage.setItem('PWA_NES_VERSION', Version.gitSha.substring(0, 7));
+    return localStorage.setItem('WEB_NES_VERSION', Version.gitSha.substring(0, 7));
 }

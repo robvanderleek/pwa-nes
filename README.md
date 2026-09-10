@@ -2,7 +2,7 @@
 
 ![Screenshot](src/static/screenshot-landscape.png)
 
-[![Build Status](https://github.com/robvanderleek/pwa-nes/workflows/Prod/badge.svg)](https://github.com/robvanderleek/pwa-nes/actions)
+[![Build Status](https://github.com/robvanderleek/web-nes/workflows/Prod/badge.svg)](https://github.com/robvanderleek/web-nes/actions)
 
 An 8-bit Nintendo emulator Web page.
 
@@ -27,11 +27,11 @@ in the list of options that appears.
 
 # Feedback, suggestions and bug reports
 
-Please create an issue here: https://github.com/robvanderleek/pwa-nes/issues
+Please create an issue here: https://github.com/robvanderleek/web-nes/issues
 
 # Contributing
 
-If you have suggestions for how PWA NES could be improved, or want to report a bug, open an issue!
+If you have suggestions for how Web-NES could be improved, or want to report a bug, open an issue!
 All and any contributions are welcome!
 
 For more, check out the [Contributing Guide](docs/CONTRIBUTING.md).

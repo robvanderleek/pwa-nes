@@ -55,11 +55,11 @@ export default function LoadRom() {
             <Portrait>
                 <Section>
                     <LargeMessage>Welcome to</LargeMessage>
-                    <LargeMessage>PWA NES</LargeMessage>
+                    <LargeMessage>Web-NES</LargeMessage>
                 </Section>
                 <Section>
                     <Message>
-                        <Hyperlink href="https://github.com/robvanderleek/pwa-nes">
+                        <Hyperlink href="https://github.com/robvanderleek/web-nes">
                             If you like this app please click here to <i className="nes-icon is-small star"/> it on
                             GitHub
                             :)

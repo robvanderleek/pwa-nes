@@ -14,7 +14,7 @@ export default function Readme() {
                 of options that appears
             </Section>
             <Section>
-                <Hyperlink href="https://github.com/robvanderleek/pwa-nes/issues">
+                <Hyperlink href="https://github.com/robvanderleek/web-nes/issues">
                     Click here to open an issue for bugs 🐛 or other feedback.
                 </Hyperlink>
             </Section>
