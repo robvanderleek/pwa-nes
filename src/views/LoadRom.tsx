@@ -76,9 +76,9 @@ export default function LoadRom() {
                     {renderPlayOption()}
                 </Section>
                 <Section>
-                <span onClick={() => setShowReadme(true)} style={{width: '90%'}}>
-                    <Marquee pauseOnClick={true} gradient={false} speed={60}>{renderMarquee()}</Marquee>
-                </span>
+                    <span onClick={() => setShowReadme(true)} style={{width: '90%'}}>
+                        <Marquee pauseOnClick={true} gradient={false} speed={60}>{renderMarquee()}</Marquee>
+                    </span>
                 </Section>
             </Portrait>
         );

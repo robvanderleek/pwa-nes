@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CI: true
-      VITE_BASE_PATH: /pwa-nes/
+      VITE_BASE_PATH: /web-nes/
     steps:
     - name: Checkout sources
       uses: actions/checkout@v7

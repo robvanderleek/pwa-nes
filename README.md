@@ -1,18 +1,17 @@
-# PWA NES
+# Web-NES
 
 ![Screenshot](src/static/screenshot-landscape.png)
 
 [![Build Status](https://github.com/robvanderleek/pwa-nes/workflows/Prod/badge.svg)](https://github.com/robvanderleek/pwa-nes/actions)
-![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=pwa-nes)
 
-An 8-bit Nintendo emulator Progressive Web App (PWA).
+An 8-bit Nintendo emulator Web page.
 
-This App builts on top of these wonderful projects:
-- [JSNES](https://github.com/bfirsh/jsnes/)
+This repository builds on top of these wonderful projects:
+- [Nostalgist.js](https://nostalgist.js.org/)
 - [NES.css](https://nostalgic-css.github.io/NES.css/)
 - [NES Controller CSS](https://codepen.io/injectilo/pen/MYJrmm)
 
-If you like PWA NES please hit the star button :)
+If you like Web-NES please hit the star button :)
 
 * [Installation](#installation)
 * [Feedback, suggestions and bug reports](#feedback-suggestions-and-bug-reports)
